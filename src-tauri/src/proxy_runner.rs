@@ -60,7 +60,7 @@ pub async fn start_proxy_process_with_profile(
     cmd.stdout(Stdio::null());
 
     // Always log to file for diagnostics (both debug and release builds)
-    let log_path = std::env::temp_dir().join(format!("donut-proxy-{}.log", id));
+    let log_path = std::env::temp_dir().join(format!("kardinal-proxy-{}.log", id));
     if let Ok(file) = std::fs::File::create(&log_path) {
       log::info!("Proxy worker stderr will be logged to: {:?}", log_path);
       cmd.stderr(Stdio::from(file));
@@ -137,7 +137,7 @@ pub async fn start_proxy_process_with_profile(
     cmd.stdout(Stdio::null());
 
     // Log to file for diagnostics (matching Unix behavior)
-    let log_path = std::env::temp_dir().join(format!("donut-proxy-{}.log", id));
+    let log_path = std::env::temp_dir().join(format!("kardinal-proxy-{}.log", id));
     if let Ok(file) = std::fs::File::create(&log_path) {
       log::info!("Proxy worker stderr will be logged to: {:?}", log_path);
       cmd.stderr(Stdio::from(file));

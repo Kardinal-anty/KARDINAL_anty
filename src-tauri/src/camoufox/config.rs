@@ -435,55 +435,52 @@ impl CamoufoxConfigBuilder {
 
     // Handle geolocation if geoip option is set
     if let Some(geoip) = geoip_option {
-      let ip = match geoip {
-        GeoIPOption::Auto => {
-          // Fetch public IP, optionally through proxy
-          geolocation::fetch_public_ip(proxy_url.as_deref())
-            .await
-            .map_err(geolocation::GeolocationError::from)?
-        }
+      let ip_result = match geoip {
+        GeoIPOption::Auto => geolocation::fetch_public_ip(proxy_url.as_deref())
+          .await
+          .ok(),
         GeoIPOption::IP(ip_str) => {
-          if !geolocation::validate_ip(&ip_str) {
-            return Err(ConfigError::Geolocation(
-              geolocation::GeolocationError::InvalidIP(ip_str),
-            ));
+          if geolocation::validate_ip(&ip_str) {
+            Some(ip_str)
+          } else {
+            log::warn!("Invalid GeoIP address provided: {ip_str}, skipping geolocation");
+            None
           }
-          ip_str
         }
       };
 
-      // Get geolocation from IP
-      match geolocation::get_geolocation(&ip) {
-        Ok(geo) => {
-          // Add geolocation config
-          for (key, value) in geo.as_config() {
-            launch_config.fingerprint_config.insert(key, value);
-          }
-
-          // Add WebRTC IP spoofing if not blocked
-          if !block_webrtc {
-            if geolocation::is_ipv4(&ip) {
-              launch_config
-                .fingerprint_config
-                .insert("webrtc:ipv4".to_string(), serde_json::json!(ip));
-            } else if geolocation::is_ipv6(&ip) {
-              launch_config
-                .fingerprint_config
-                .insert("webrtc:ipv6".to_string(), serde_json::json!(ip));
+      if let Some(ip) = ip_result {
+        match geolocation::get_geolocation(&ip) {
+          Ok(geo) => {
+            for (key, value) in geo.as_config() {
+              launch_config.fingerprint_config.insert(key, value);
             }
-          }
 
-          log::info!(
-            "Applied geolocation from IP {}: {} ({})",
-            ip,
-            geo.locale.as_string(),
-            geo.timezone
-          );
+            if !block_webrtc {
+              if geolocation::is_ipv4(&ip) {
+                launch_config
+                  .fingerprint_config
+                  .insert("webrtc:ipv4".to_string(), serde_json::json!(ip));
+              } else if geolocation::is_ipv6(&ip) {
+                launch_config
+                  .fingerprint_config
+                  .insert("webrtc:ipv6".to_string(), serde_json::json!(ip));
+              }
+            }
+
+            log::info!(
+              "Applied geolocation from IP {}: {} ({})",
+              ip,
+              geo.locale.as_string(),
+              geo.timezone
+            );
+          }
+          Err(e) => {
+            log::warn!("Failed to get geolocation for IP {}: {}", ip, e);
+          }
         }
-        Err(e) => {
-          log::warn!("Failed to get geolocation for IP {}: {}", ip, e);
-          // Continue without geolocation rather than failing
-        }
+      } else {
+        log::warn!("Could not determine public IP for geolocation, skipping");
       }
     }
 

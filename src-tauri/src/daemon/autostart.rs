@@ -17,8 +17,8 @@ fn get_daemon_path() -> Option<PathBuf> {
   #[cfg(target_os = "macos")]
   {
     let paths = [
-      PathBuf::from("/Applications/Donut Browser.app/Contents/MacOS/donut-daemon"),
-      dirs::home_dir()?.join("Applications/Donut Browser.app/Contents/MacOS/donut-daemon"),
+      PathBuf::from("/Applications/KARDINAL Anty.app/Contents/MacOS/kardinal-daemon"),
+      dirs::home_dir()?.join("Applications/KARDINAL Anty.app/Contents/MacOS/kardinal-daemon"),
     ];
     for path in paths {
       if path.exists() {
@@ -30,8 +30,8 @@ fn get_daemon_path() -> Option<PathBuf> {
   #[cfg(target_os = "windows")]
   {
     let paths = [
-      dirs::data_local_dir()?.join("Donut Browser/donut-daemon.exe"),
-      PathBuf::from("C:\\Program Files\\Donut Browser\\donut-daemon.exe"),
+      dirs::data_local_dir()?.join("KARDINAL Anty/kardinal-daemon.exe"),
+      PathBuf::from("C:\\Program Files\\KARDINAL Anty\\kardinal-daemon.exe"),
     ];
     for path in paths {
       if path.exists() {
@@ -43,9 +43,9 @@ fn get_daemon_path() -> Option<PathBuf> {
   #[cfg(target_os = "linux")]
   {
     let paths = [
-      PathBuf::from("/usr/bin/donut-daemon"),
-      PathBuf::from("/usr/local/bin/donut-daemon"),
-      dirs::home_dir()?.join(".local/bin/donut-daemon"),
+      PathBuf::from("/usr/bin/kardinal-daemon"),
+      PathBuf::from("/usr/local/bin/kardinal-daemon"),
+      dirs::home_dir()?.join(".local/bin/kardinal-daemon"),
     ];
     for path in paths {
       if path.exists() {
@@ -60,11 +60,11 @@ fn get_daemon_path() -> Option<PathBuf> {
 fn daemon_binary_name() -> &'static str {
   #[cfg(windows)]
   {
-    "donut-daemon.exe"
+    "kardinal-daemon.exe"
   }
   #[cfg(not(windows))]
   {
-    "donut-daemon"
+    "kardinal-daemon"
   }
 }
 
@@ -79,7 +79,7 @@ pub fn enable_autostart() -> io::Result<()> {
 
   fs::create_dir_all(&plist_dir)?;
 
-  let plist_path = plist_dir.join("com.donutbrowser.daemon.plist");
+  let plist_path = plist_dir.join("com.kardinal-anty.daemon.plist");
 
   // Get log directory (use data directory instead of /tmp)
   let log_dir = get_data_dir()
@@ -93,7 +93,7 @@ pub fn enable_autostart() -> io::Result<()> {
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.donutbrowser.daemon</string>
+    <string>com.kardinal-anty.daemon</string>
     <key>ProgramArguments</key>
     <array>
         <string>{daemon_path}</string>
@@ -129,7 +129,7 @@ pub fn enable_autostart() -> io::Result<()> {
 
 #[cfg(target_os = "macos")]
 pub fn get_plist_path() -> Option<PathBuf> {
-  dirs::home_dir().map(|h| h.join("Library/LaunchAgents/com.donutbrowser.daemon.plist"))
+  dirs::home_dir().map(|h| h.join("Library/LaunchAgents/com.kardinal-anty.daemon.plist"))
 }
 
 #[cfg(target_os = "macos")]
@@ -227,12 +227,12 @@ pub fn enable_autostart() -> io::Result<()> {
 
   fs::create_dir_all(&autostart_dir)?;
 
-  let desktop_path = autostart_dir.join("donut-daemon.desktop");
+  let desktop_path = autostart_dir.join("kardinal-daemon.desktop");
 
   let desktop_content = format!(
     r#"[Desktop Entry]
 Type=Application
-Name=Donut Browser Daemon
+Name=KARDINAL Anty Daemon
 Exec={} start
 Hidden=false
 NoDisplay=true
@@ -251,7 +251,7 @@ X-GNOME-Autostart-enabled=true
 pub fn disable_autostart() -> io::Result<()> {
   let desktop_path = dirs::config_dir()
     .ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "Config directory not found"))?
-    .join("autostart/donut-daemon.desktop");
+    .join("autostart/kardinal-daemon.desktop");
 
   if desktop_path.exists() {
     fs::remove_file(&desktop_path)?;
@@ -264,7 +264,7 @@ pub fn disable_autostart() -> io::Result<()> {
 #[cfg(target_os = "linux")]
 pub fn is_autostart_enabled() -> bool {
   dirs::config_dir()
-    .map(|c| c.join("autostart/donut-daemon.desktop").exists())
+    .map(|c| c.join("autostart/kardinal-daemon.desktop").exists())
     .unwrap_or(false)
 }
 
@@ -280,7 +280,7 @@ pub fn enable_autostart() -> io::Result<()> {
   let (key, _) = hkcu.create_subkey("Software\\Microsoft\\Windows\\CurrentVersion\\Run")?;
 
   key.set_value(
-    "DonutBrowserDaemon",
+    "KardinalAntyDaemon",
     &format!("\"{}\" start", daemon_path.display()),
   )?;
 
@@ -298,7 +298,7 @@ pub fn disable_autostart() -> io::Result<()> {
     "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
     winreg::enums::KEY_WRITE,
   ) {
-    let _ = key.delete_value("DonutBrowserDaemon");
+    let _ = key.delete_value("KardinalAntyDaemon");
     log::info!("Removed registry autostart entry");
   }
 
@@ -312,16 +312,16 @@ pub fn is_autostart_enabled() -> bool {
 
   let hkcu = RegKey::predef(HKEY_CURRENT_USER);
   if let Ok(key) = hkcu.open_subkey("Software\\Microsoft\\Windows\\CurrentVersion\\Run") {
-    key.get_value::<String, _>("DonutBrowserDaemon").is_ok()
+    key.get_value::<String, _>("KardinalAntyDaemon").is_ok()
   } else {
     false
   }
 }
 
 pub fn get_data_dir() -> Option<PathBuf> {
-  if let Some(proj_dirs) = ProjectDirs::from("com", "donutbrowser", "Donut Browser") {
+  if let Some(proj_dirs) = ProjectDirs::from("com", "kardinal-anty", "KARDINAL Anty") {
     Some(proj_dirs.data_dir().to_path_buf())
   } else {
-    dirs::home_dir().map(|h| h.join(".donutbrowser"))
+    dirs::home_dir().map(|h| h.join(".kardinal-anty"))
   }
 }

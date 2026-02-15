@@ -39,9 +39,9 @@ impl BrowserRunner {
   pub fn get_binaries_dir(&self) -> PathBuf {
     let mut path = self.base_dirs.data_local_dir().to_path_buf();
     path.push(if cfg!(debug_assertions) {
-      "DonutBrowserDev"
+      "KardinalAntyDev"
     } else {
-      "DonutBrowser"
+      "kardinal-anty"
     });
     path.push("binaries");
     path

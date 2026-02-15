@@ -15,8 +15,8 @@ use tokio::sync::Mutex;
 use crate::settings_manager::SettingsManager;
 use crate::sync;
 
-pub const CLOUD_API_URL: &str = "https://api.donutbrowser.com";
-pub const CLOUD_SYNC_URL: &str = "https://sync.donutbrowser.com";
+pub const CLOUD_API_URL: &str = "https://api.kardinal-anty.com";
+pub const CLOUD_SYNC_URL: &str = "https://sync.kardinal-anty.com";
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CloudUser {
@@ -96,7 +96,7 @@ impl CloudAuthManager {
   }
 
   fn get_vault_password() -> String {
-    env!("DONUT_BROWSER_VAULT_PASSWORD").to_string()
+    env!("KARDINAL_ANTY_VAULT_PASSWORD").to_string()
   }
 
   // --- Encrypted file storage (same pattern as settings_manager.rs) ---

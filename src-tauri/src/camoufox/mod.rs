@@ -16,7 +16,7 @@
 //! # Example
 //!
 //! ```rust,ignore
-//! use donutbrowser_lib::camoufox::{CamoufoxLauncher, LaunchOptions};
+//! use kardinal_anty_lib::camoufox::{CamoufoxLauncher, LaunchOptions};
 //!
 //! async fn launch_browser() -> Result<(), Box<dyn std::error::Error>> {
 //!     let launcher = CamoufoxLauncher::new("/path/to/camoufox").await?;

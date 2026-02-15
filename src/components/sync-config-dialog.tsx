@@ -261,7 +261,7 @@ export function SyncConfigDialog({ isOpen, onClose }: SyncConfigDialogProps) {
                 <div className="flex gap-2 pt-2">
                   <Button variant="outline" className="flex-1" asChild>
                     <a
-                      href="https://donutbrowser.com/account"
+                      href="https://kardinal-anty.com/account"
                       target="_blank"
                       rel="noopener noreferrer"
                     >

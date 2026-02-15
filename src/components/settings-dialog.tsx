@@ -743,7 +743,7 @@ export function SettingsDialog({
             </LoadingButton>
 
             <p className="text-xs text-muted-foreground">
-              When set as default, Donut Browser will handle web links and allow
+              When set as default, KARDINAL Anty will handle web links and allow
               you to choose which profile to use.
             </p>
           </div>
@@ -804,7 +804,7 @@ export function SettingsDialog({
               )}
 
               <p className="text-xs text-muted-foreground">
-                These permissions allow browsers launched from Donut Browser to
+                These permissions allow browsers launched from KARDINAL Anty to
                 access system resources. Each website will still ask for your
                 permission individually.
               </p>

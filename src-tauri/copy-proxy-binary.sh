@@ -99,9 +99,9 @@ copy_binary() {
   fi
 }
 
-# Copy donut-proxy binary
-copy_binary "donut-proxy"
+# Copy kardinal-proxy binary
+copy_binary "kardinal-proxy"
 
-# Copy donut-daemon binary
-copy_binary "donut-daemon"
+# Copy kardinal-daemon binary
+copy_binary "kardinal-daemon"
 

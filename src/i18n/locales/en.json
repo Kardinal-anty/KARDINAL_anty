@@ -90,12 +90,12 @@
       "title": "Default Browser",
       "setAsDefault": "Set as Default Browser",
       "alreadyDefault": "Already Default Browser",
-      "description": "When set as default, Donut Browser will handle web links and allow you to choose which profile to use."
+      "description": "When set as default, KARDINAL Anty will handle web links and allow you to choose which profile to use."
     },
     "permissions": {
       "title": "System Permissions",
       "loading": "Loading permissions...",
-      "description": "These permissions allow browsers launched from Donut Browser to access system resources. Each website will still ask for your permission individually.",
+      "description": "These permissions allow browsers launched from KARDINAL Anty to access system resources. Each website will still ask for your permission individually.",
       "microphone": "Microphone",
       "microphoneDescription": "Access to microphone for browser applications",
       "camera": "Camera",

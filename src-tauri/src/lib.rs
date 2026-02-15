@@ -363,7 +363,7 @@ async fn get_mcp_config(app_handle: tauri::AppHandle) -> Result<Option<McpConfig
 
   let config_json = serde_json::json!({
     "mcpServers": {
-      "donut-browser": {
+      "kardinal-anty": {
         "url": format!("http://127.0.0.1:{}/mcp", port),
         "headers": {
           "Authorization": format!("Bearer {}", token)
@@ -596,9 +596,9 @@ pub fn run() {
 
   // Configure logging plugin with separate logs for dev and production
   let log_file_name = if cfg!(debug_assertions) {
-    "DonutBrowserDev"
+    "KardinalAntyDev"
   } else {
-    "DonutBrowser"
+    "kardinal-anty"
   };
 
   tauri::Builder::default()
@@ -648,7 +648,7 @@ pub fn run() {
       // Create the main window programmatically
       #[allow(unused_variables)]
       let win_builder = WebviewWindowBuilder::new(app, "main", WebviewUrl::default())
-        .title("Donut Browser")
+        .title("KARDINAL Anty")
         .inner_size(800.0, 500.0)
         .resizable(false)
         .fullscreen(false)

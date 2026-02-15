@@ -4,7 +4,7 @@
  *
  * This script:
  * 1. Downloads and starts MinIO (S3-compatible storage)
- * 2. Builds and starts donut-sync server
+ * 2. Builds and starts kardinal-sync server
  * 3. Runs the Rust sync e2e tests
  * 4. Cleans up all processes
  *
@@ -151,20 +151,20 @@ async function startMinio(minioBin) {
   return proc;
 }
 
-async function buildDonutSync() {
-  log("Building donut-sync...");
+async function buildKardinalSync() {
+  log("Building kardinal-sync...");
   execSync("pnpm build", {
-    cwd: path.join(ROOT_DIR, "donut-sync"),
+    cwd: path.join(ROOT_DIR, "kardinal-sync"),
     stdio: process.env.VERBOSE ? "inherit" : "ignore",
   });
-  log("donut-sync built");
+  log("kardinal-sync built");
 }
 
-async function startDonutSync() {
-  log(`Starting donut-sync on port ${SYNC_PORT}...`);
+async function startKardinalSync() {
+  log(`Starting kardinal-sync on port ${SYNC_PORT}...`);
 
   const proc = spawn("node", ["dist/main.js"], {
-    cwd: path.join(ROOT_DIR, "donut-sync"),
+    cwd: path.join(ROOT_DIR, "kardinal-sync"),
     env: {
       ...process.env,
       PORT: String(SYNC_PORT),
@@ -172,7 +172,7 @@ async function startDonutSync() {
       S3_ENDPOINT: `http://localhost:${MINIO_PORT}`,
       S3_ACCESS_KEY_ID: "minioadmin",
       S3_SECRET_ACCESS_KEY: "minioadmin",
-      S3_BUCKET: "donut-sync-test",
+      S3_BUCKET: "kardinal-sync-test",
       S3_FORCE_PATH_STYLE: "true",
     },
     stdio: ["ignore", "pipe", "pipe"],
@@ -182,22 +182,22 @@ async function startDonutSync() {
 
   proc.stdout.on("data", (data) => {
     if (process.env.VERBOSE) {
-      console.log(`[donut-sync] ${data.toString().trim()}`);
+      console.log(`[kardinal-sync] ${data.toString().trim()}`);
     }
   });
 
   proc.stderr.on("data", (data) => {
     if (process.env.VERBOSE) {
-      console.error(`[donut-sync] ${data.toString().trim()}`);
+      console.error(`[kardinal-sync] ${data.toString().trim()}`);
     }
   });
 
   proc.on("error", (err) => {
-    error(`donut-sync error: ${err.message}`);
+    error(`kardinal-sync error: ${err.message}`);
   });
 
   await waitForHealth(`http://localhost:${SYNC_PORT}/health`, 30000);
-  log("donut-sync is ready");
+  log("kardinal-sync is ready");
 
   return proc;
 }
@@ -282,8 +282,8 @@ async function main() {
   try {
     const minioBin = await ensureMinioBinary();
     await startMinio(minioBin);
-    await buildDonutSync();
-    await startDonutSync();
+    await buildKardinalSync();
+    await startKardinalSync();
 
     const exitCode = await runTests();
 

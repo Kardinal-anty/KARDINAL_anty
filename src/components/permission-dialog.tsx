@@ -83,9 +83,9 @@ export function PermissionDialog({
   const getPermissionDescription = (type: PermissionType) => {
     switch (type) {
       case "microphone":
-        return "Donut Browser needs access to your microphone to enable microphone functionality in web browsers. Each website that wants to use your microphone will still ask for your permission individually.";
+        return "KARDINAL Anty needs access to your microphone to enable microphone functionality in web browsers. Each website that wants to use your microphone will still ask for your permission individually.";
       case "camera":
-        return "Donut Browser needs access to your camera to enable camera functionality in web browsers. Each website that wants to use your camera will still ask for your permission individually.";
+        return "KARDINAL Anty needs access to your camera to enable camera functionality in web browsers. Each website that wants to use your camera will still ask for your permission individually.";
     }
   };
 
@@ -131,7 +131,7 @@ export function PermissionDialog({
           {isCurrentPermissionGranted && (
             <div className="p-3 bg-green-50 rounded-lg dark:bg-green-900/20">
               <p className="text-sm text-green-800 dark:text-green-200">
-                ✅ Permission granted! Browsers launched from Donut Browser can
+                ✅ Permission granted! Browsers launched from KARDINAL Anty can
                 now access your {permissionType}.
               </p>
             </div>

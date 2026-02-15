@@ -33,9 +33,9 @@ impl ProfileManager {
   pub fn get_profiles_dir(&self) -> PathBuf {
     let mut path = self.base_dirs.data_local_dir().to_path_buf();
     path.push(if cfg!(debug_assertions) {
-      "DonutBrowserDev"
+      "KardinalAntyDev"
     } else {
-      "DonutBrowser"
+      "kardinal-anty"
     });
     path.push("profiles");
     path
@@ -44,9 +44,9 @@ impl ProfileManager {
   pub fn get_binaries_dir(&self) -> PathBuf {
     let mut path = self.base_dirs.data_local_dir().to_path_buf();
     path.push(if cfg!(debug_assertions) {
-      "DonutBrowserDev"
+      "KardinalAntyDev"
     } else {
-      "DonutBrowser"
+      "kardinal-anty"
     });
     path.push("binaries");
     path
@@ -1664,8 +1664,8 @@ mod tests {
     let profiles_dir = manager.get_profiles_dir();
 
     assert!(
-      profiles_dir.to_string_lossy().contains("DonutBrowser"),
-      "Profiles dir should contain DonutBrowser"
+      profiles_dir.to_string_lossy().contains("KardinalAnty"),
+      "Profiles dir should contain KardinalAnty"
     );
     assert!(
       profiles_dir.to_string_lossy().contains("profiles"),
@@ -1700,8 +1700,8 @@ mod tests {
     let path_str = binaries_dir.to_string_lossy();
 
     assert!(
-      path_str.contains("DonutBrowser"),
-      "Binaries dir should contain DonutBrowser"
+      path_str.contains("KardinalAnty"),
+      "Binaries dir should contain KardinalAnty"
     );
     assert!(
       path_str.contains("binaries"),
