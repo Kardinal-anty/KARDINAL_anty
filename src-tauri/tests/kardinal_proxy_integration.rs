@@ -7,7 +7,7 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
 use tokio::time::sleep;
 
-/// Setup function to ensure donut-proxy binary exists and cleanup stale proxies
+/// Setup function to ensure kardinal-proxy binary exists and cleanup stale proxies
 async fn setup_test() -> Result<std::path::PathBuf, Box<dyn std::error::Error + Send + Sync>> {
   let cargo_manifest_dir = std::env::var("CARGO_MANIFEST_DIR")?;
   let project_root = std::path::PathBuf::from(cargo_manifest_dir)
@@ -15,11 +15,11 @@ async fn setup_test() -> Result<std::path::PathBuf, Box<dyn std::error::Error + 
     .unwrap()
     .to_path_buf();
 
-  // Build donut-proxy binary if it doesn't exist
+  // Build kardinal-proxy binary if it doesn't exist
   let proxy_binary_name = if cfg!(windows) {
-    "donut-proxy.exe"
+    "kardinal-proxy.exe"
   } else {
-    "donut-proxy"
+    "kardinal-proxy"
   };
   let proxy_binary = project_root
     .join("src-tauri")
@@ -28,19 +28,19 @@ async fn setup_test() -> Result<std::path::PathBuf, Box<dyn std::error::Error + 
     .join(proxy_binary_name);
 
   if !proxy_binary.exists() {
-    println!("Building donut-proxy binary for integration tests...");
+    println!("Building kardinal-proxy binary for integration tests...");
     let build_status = std::process::Command::new("cargo")
-      .args(["build", "--bin", "donut-proxy"])
+      .args(["build", "--bin", "kardinal-proxy"])
       .current_dir(project_root.join("src-tauri"))
       .status()?;
 
     if !build_status.success() {
-      return Err("Failed to build donut-proxy binary".into());
+      return Err("Failed to build kardinal-proxy binary".into());
     }
   }
 
   if !proxy_binary.exists() {
-    return Err("donut-proxy binary was not created successfully".into());
+    return Err("kardinal-proxy binary was not created successfully".into());
   }
 
   // Clean up any stale proxies from previous test runs
@@ -522,7 +522,7 @@ async fn test_traffic_tracking() -> Result<(), Box<dyn std::error::Error + Send 
     .expect("Failed to get base directories")
     .cache_dir()
     .to_path_buf();
-  let traffic_stats_dir = cache_dir.join("DonutBrowserDev").join("traffic_stats");
+  let traffic_stats_dir = cache_dir.join("KardinalAntyDev").join("traffic_stats");
   let stats_file = traffic_stats_dir.join(format!("{}.json", proxy_id));
 
   if stats_file.exists() {

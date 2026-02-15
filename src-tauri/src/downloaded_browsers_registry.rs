@@ -74,9 +74,9 @@ impl DownloadedBrowsersRegistry {
     let base_dirs = BaseDirs::new().ok_or("Failed to get base directories")?;
     let mut path = base_dirs.data_local_dir().to_path_buf();
     path.push(if cfg!(debug_assertions) {
-      "DonutBrowserDev"
+      "KardinalAntyDev"
     } else {
-      "DonutBrowser"
+      "kardinal-anty"
     });
     path.push("data");
     path.push("downloaded_browsers.json");
@@ -132,9 +132,9 @@ impl DownloadedBrowsersRegistry {
     let binaries_dir = if let Some(base_dirs) = directories::BaseDirs::new() {
       let mut path = base_dirs.data_local_dir().to_path_buf();
       path.push(if cfg!(debug_assertions) {
-        "DonutBrowserDev"
+        "KardinalAntyDev"
       } else {
-        "DonutBrowser"
+        "kardinal-anty"
       });
       path.push("binaries");
       path
@@ -273,11 +273,21 @@ impl DownloadedBrowsersRegistry {
       }
     };
 
+    const PROTECTED_BROWSERS: &[&str] = &["wayfern", "camoufox"];
+
     // Collect all downloaded browsers that are not in active profiles
     let mut to_remove = Vec::new();
     {
       let data = self.data.lock().unwrap();
       for (browser, versions) in &data.browsers {
+        // Keep the latest version of protected browsers even if no profile references them.
+        // These browsers are auto-downloaded at startup and should persist across profile deletions.
+        let latest_version = if PROTECTED_BROWSERS.contains(&browser.as_str()) {
+          versions.keys().max().cloned()
+        } else {
+          None
+        };
+
         for version in versions.keys() {
           let browser_version = (browser.clone(), version.clone());
 
@@ -293,10 +303,16 @@ impl DownloadedBrowsersRegistry {
             continue;
           }
 
+          // Don't remove the latest version of a protected browser
+          if let Some(ref latest) = latest_version {
+            if version == latest {
+              log::info!("Keeping: {browser} {version} (latest version of protected browser)");
+              continue;
+            }
+          }
+
           // Don't remove if this version has a pending update for a running profile
-          // This handles the case where a running profile has an update downloaded but not yet applied
           if pending_updates.contains(&browser_version) {
-            // Check if there are any running profiles for this browser that could be updated
             let has_running_profile_for_browser =
               running_profiles.iter().any(|(b, _)| b == browser);
             if has_running_profile_for_browser {
@@ -515,9 +531,9 @@ impl DownloadedBrowsersRegistry {
     let base_dirs = directories::BaseDirs::new().ok_or("Failed to get base directories")?;
     let mut binaries_dir = base_dirs.data_local_dir().to_path_buf();
     binaries_dir.push(if cfg!(debug_assertions) {
-      "DonutBrowserDev"
+      "KardinalAntyDev"
     } else {
-      "DonutBrowser"
+      "kardinal-anty"
     });
     binaries_dir.push("binaries");
 
@@ -810,9 +826,9 @@ impl DownloadedBrowsersRegistry {
       let binaries_dir = if let Some(base_dirs) = directories::BaseDirs::new() {
         let mut path = base_dirs.data_local_dir().to_path_buf();
         path.push(if cfg!(debug_assertions) {
-          "DonutBrowserDev"
+          "KardinalAntyDev"
         } else {
-          "DonutBrowser"
+          "kardinal-anty"
         });
         path.push("binaries");
         path

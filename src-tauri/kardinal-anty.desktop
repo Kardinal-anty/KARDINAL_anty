@@ -1,16 +1,16 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Donut
-Name[en]=Donut
+Name=KARDINAL Anty
+Name[en]=KARDINAL Anty
 GenericName=Web Browser
-X-GNOME-FullName=Donut
+X-GNOME-FullName=KARDINAL Anty
 Comment=Simple Yet Powerful Anti-Detect Browser
-Exec=donutbrowser %u
-Icon=donutbrowser
+Exec=kardinal-anty %u
+Icon=kardinal-anty
 StartupNotify=true
 NoDisplay=false
 Categories=Network;WebBrowser;
 MimeType=x-scheme-handler/http;x-scheme-handler/https;text/html;application/xhtml+xml;
-StartupWMClass=donutbrowser
+StartupWMClass=kardinal-anty
 Keywords=browser;web;internet;productivity;

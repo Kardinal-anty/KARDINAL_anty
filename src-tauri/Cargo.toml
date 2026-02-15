@@ -1,10 +1,10 @@
 [package]
-name = "donutbrowser"
+name = "kardinal-anty"
 version = "0.13.9"
-description = "Simple Yet Powerful Anti-Detect Browser"
-authors = ["zhom@github"]
+description = "KARDINAL Anty - Anti-Detect Browser"
+authors = ["CJ-aezakmi"]
 edition = "2021"
-default-run = "donutbrowser"
+default-run = "kardinal-anty"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -12,21 +12,21 @@ default-run = "donutbrowser"
 # The `_lib` suffix may seem redundant but it is necessary
 # to make the lib name unique and wouldn't conflict with the bin name.
 # This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
-name = "donutbrowser_lib"
+name = "kardinal_anty_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 doctest = false
 
 [[bin]]
-name = "donutbrowser"
+name = "kardinal-anty"
 path = "src/main.rs"
 
 [[bin]]
-name = "donut-proxy"
+name = "kardinal-proxy"
 path = "src/bin/proxy_server.rs"
 
 [[bin]]
-name = "donut-daemon"
-path = "src/bin/donut_daemon.rs"
+name = "kardinal-daemon"
+path = "src/bin/kardinal_daemon.rs"
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
@@ -150,8 +150,8 @@ serial_test = "3"
 
 # Integration test configuration
 [[test]]
-name = "donut_proxy_integration"
-path = "tests/donut_proxy_integration.rs"
+name = "kardinal_proxy_integration"
+path = "tests/kardinal_proxy_integration.rs"
 
 [[test]]
 name = "sync_e2e"

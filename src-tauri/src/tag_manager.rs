@@ -19,7 +19,7 @@ impl TagManager {
   pub fn new() -> Self {
     Self {
       base_dirs: BaseDirs::new().expect("Failed to get base directories"),
-      data_dir_override: std::env::var("DONUTBROWSER_DATA_DIR")
+      data_dir_override: std::env::var("KARDINAL_ANTY_DATA_DIR")
         .ok()
         .map(PathBuf::from),
     }
@@ -44,9 +44,9 @@ impl TagManager {
 
     let mut path = self.base_dirs.data_local_dir().to_path_buf();
     path.push(if cfg!(debug_assertions) {
-      "DonutBrowserDev"
+      "KardinalAntyDev"
     } else {
-      "DonutBrowser"
+      "kardinal-anty"
     });
     path.push("data");
     path.push("tags.json");

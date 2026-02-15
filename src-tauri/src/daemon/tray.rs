@@ -39,9 +39,9 @@ impl TrayMenu {
   pub fn new() -> Self {
     let menu = Menu::new();
 
-    let open_item = MenuItem::new("Open Donut Browser", true, None);
+    let open_item = MenuItem::new("Open KARDINAL Anty", true, None);
     let separator = PredefinedMenuItem::separator();
-    let quit_item = MenuItem::new("Quit Donut Browser", true, None);
+    let quit_item = MenuItem::new("Quit KARDINAL Anty", true, None);
 
     menu.append(&open_item).unwrap();
     menu.append(&separator).unwrap();
@@ -58,7 +58,7 @@ impl TrayMenu {
 pub fn create_tray_icon(icon: Icon, menu: &Menu) -> TrayIcon {
   let builder = TrayIconBuilder::new()
     .with_icon(icon)
-    .with_tooltip("Donut Browser")
+    .with_tooltip("KARDINAL Anty")
     .with_menu(Box::new(menu.clone()));
 
   // On macOS, template icons are automatically colored by the system for light/dark mode
@@ -79,7 +79,7 @@ pub fn open_gui() {
 
   #[cfg(target_os = "macos")]
   {
-    let _ = Command::new("open").arg("-a").arg("Donut Browser").spawn();
+    let _ = Command::new("open").arg("-a").arg("KARDINAL Anty").spawn();
   }
 
   #[cfg(target_os = "windows")]
@@ -89,7 +89,7 @@ pub fn open_gui() {
     // In dev mode, find the main exe next to the daemon binary
     if let Ok(current_exe) = std::env::current_exe() {
       if let Some(exe_dir) = current_exe.parent() {
-        let app_path = exe_dir.join("donutbrowser.exe");
+        let app_path = exe_dir.join("kardinal-anty.exe");
         if app_path.exists() {
           let _ = Command::new(app_path).spawn();
           return;
@@ -98,9 +98,9 @@ pub fn open_gui() {
     }
 
     let paths = [
-      dirs::data_local_dir().map(|p| p.join("Donut Browser").join("Donut Browser.exe")),
+      dirs::data_local_dir().map(|p| p.join("KARDINAL Anty").join("KARDINAL Anty.exe")),
       Some(PathBuf::from(
-        "C:\\Program Files\\Donut Browser\\Donut Browser.exe",
+        "C:\\Program Files\\KARDINAL Anty\\KARDINAL Anty.exe",
       )),
     ];
 
@@ -114,7 +114,7 @@ pub fn open_gui() {
 
   #[cfg(target_os = "linux")]
   {
-    let _ = Command::new("donutbrowser").spawn();
+    let _ = Command::new("kardinal-anty").spawn();
   }
 }
 
@@ -122,7 +122,7 @@ pub fn activate_gui() {
   #[cfg(target_os = "macos")]
   {
     let _ = Command::new("osascript")
-      .args(["-e", "tell application \"Donut Browser\" to activate"])
+      .args(["-e", "tell application \"KARDINAL Anty\" to activate"])
       .spawn();
   }
 }

@@ -1,6 +1,6 @@
-# Contributing to Donut Browser
+# Contributing to KARDINAL Anty
 
-Contributions are welcome and always appreciated! 🍩
+Contributions are welcome and always appreciated! 
 
 To begin working on an issue, simply leave a comment indicating that you're taking it on. There's no need to be officially assigned to the issue before you start.
 
@@ -14,10 +14,10 @@ Do keep in mind before you start working on an issue / posting a PR:
 
 ## Contributor License Agreement
 
-By contributing to Donut Browser, you agree that your contributions will be licensed under the same terms as the project. You must agree to our [Contributor License Agreement](CONTRIBUTOR_LICENSE_AGREEMENT.md) before your contributions can be accepted. This agreement ensures that:
+By contributing to KARDINAL Anty, you agree that your contributions will be licensed under the same terms as the project. You must agree to our [Contributor License Agreement](CONTRIBUTOR_LICENSE_AGREEMENT.md) before your contributions can be accepted. This agreement ensures that:
 
-- Your contributions can be used in the open source version of Donut Browser (licensed under AGPL-3.0)
-- Donut Browser can offer commercial licenses for the software, including your contributions
+- Your contributions can be used in the open source version of KARDINAL Anty (licensed under AGPL-3.0)
+- KARDINAL Anty can offer commercial licenses for the software, including your contributions
 - You retain all rights to use your contributions for any other purpose
 
 When you submit your first pull request, you acknowledge that you agree to the terms of the Contributor License Agreement.
@@ -166,7 +166,7 @@ Refs #00000
 
 ## Architecture Overview
 
-Donut Browser is built with:
+KARDINAL Anty is built with:
 
 - **Frontend**: Next.js React application
 - **Backend**: Tauri (Rust) for native functionality
@@ -191,4 +191,4 @@ All contributors will be recognized! We use the all-contributors specification t
 
 ---
 
-Thank you for contributing to Donut Browser! 🍩✨
+Thank you for contributing to KARDINAL Anty! 

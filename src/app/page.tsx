@@ -770,7 +770,7 @@ export default function Home() {
           label: "Learn more",
           onClick: () => {
             const event = new CustomEvent("url-open-request", {
-              detail: "https://github.com/zhom/donutbrowser/discussions/66",
+              detail: "https://github.com/CJ-aezakmi/kardinal/discussions/66",
             });
             window.dispatchEvent(event);
           },
@@ -802,7 +802,7 @@ export default function Home() {
           label: "Learn more",
           onClick: () => {
             const event = new CustomEvent("url-open-request", {
-              detail: "https://github.com/zhom/donutbrowser/discussions",
+              detail: "https://github.com/CJ-aezakmi/kardinal/discussions",
             });
             window.dispatchEvent(event);
           },

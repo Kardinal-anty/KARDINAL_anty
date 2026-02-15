@@ -1,4 +1,4 @@
-use donutbrowser_lib::sync::types::*;
+use kardinal_anty_lib::sync::types::*;
 use reqwest::Client;
 use serde_json::json;
 use std::env;
@@ -30,8 +30,8 @@ async fn ensure_sync_server_available() {
           "Sync server is not healthy. Health check returned status: {}\n\
           Server URL: {}\n\
           Please ensure:\n\
-          1. MinIO is running (docker compose up -d in donut-sync/)\n\
-          2. donut-sync server is running (cd donut-sync && pnpm start:dev)\n\
+          1. MinIO is running (docker compose up -d in kardinal-sync/)\n\
+          2. kardinal-sync server is running (cd kardinal-sync && pnpm start:dev)\n\
           3. SYNC_SERVER_URL environment variable is set correctly",
           response.status(),
           get_sync_server_url()
@@ -43,8 +43,8 @@ async fn ensure_sync_server_available() {
         "Cannot connect to sync server: {}\n\
         Server URL: {}\n\
         Please ensure:\n\
-        1. MinIO is running (docker compose up -d in donut-sync/)\n\
-        2. donut-sync server is running (cd donut-sync && pnpm start:dev)\n\
+        1. MinIO is running (docker compose up -d in kardinal-sync/)\n\
+        2. kardinal-sync server is running (cd kardinal-sync && pnpm start:dev)\n\
         3. SYNC_SERVER_URL environment variable is set correctly\n\
         4. Network connectivity is available",
         e,

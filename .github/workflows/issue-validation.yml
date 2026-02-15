@@ -61,7 +61,7 @@ jobs:
         with:
           prompt-file: issue_analysis.txt
           system-prompt: |
-            You are an issue validation assistant for Donut Browser, an anti-detect browser.
+            You are an issue validation assistant for KARDINAL Anty, an anti-detect browser.
 
             Analyze the provided issue content and determine if it contains sufficient information based on these requirements:
 
@@ -264,7 +264,7 @@ jobs:
         with:
           prompt-file: pr_analysis.txt
           system-prompt: |
-            You are a code review assistant for Donut Browser, an open-source anti-detect browser built with Tauri, Next.js, and Rust.
+            You are a code review assistant for KARDINAL Anty, an open-source anti-detect browser built with Tauri, Next.js, and Rust.
 
             Review the provided pull request and provide constructive feedback. Focus on:
             1. Code quality and best practices
