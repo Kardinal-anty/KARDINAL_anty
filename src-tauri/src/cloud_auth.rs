@@ -15,8 +15,8 @@ use tokio::sync::Mutex;
 use crate::settings_manager::SettingsManager;
 use crate::sync;
 
-pub const CLOUD_API_URL: &str = "https://api.kardinal-anty.com";
-pub const CLOUD_SYNC_URL: &str = "https://sync.kardinal-anty.com";
+pub const CLOUD_API_URL: &str = "https://api.kardinal-anty.group";
+pub const CLOUD_SYNC_URL: &str = "https://sync.kardinal-anty.group";
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CloudUser {

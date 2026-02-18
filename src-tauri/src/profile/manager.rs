@@ -1448,9 +1448,10 @@ impl ProfileManager {
       // Disable welcome / first-run screens
       "user_pref(\"browser.aboutwelcome.enabled\", false);".to_string(),
       "user_pref(\"browser.startup.homepage_override.mstone\", \"ignore\");".to_string(),
-      "user_pref(\"startup.homepage_welcome_url\", \"\");".to_string(),
+      "user_pref(\"startup.homepage_welcome_url\", \"https://kardinal-anty.group/\");".to_string(),
       "user_pref(\"startup.homepage_welcome_url.additional\", \"\");".to_string(),
-      "user_pref(\"startup.homepage_override_url\", \"\");".to_string(),
+      "user_pref(\"startup.homepage_override_url\", \"https://kardinal-anty.group/\");".to_string(),
+      "user_pref(\"browser.startup.homepage\", \"https://kardinal-anty.group/\");".to_string(),
       // Keep extension updates enabled
       "user_pref(\"extensions.update.enabled\", true);".to_string(),
       "user_pref(\"extensions.update.autoUpdateDefault\", true);".to_string(),
