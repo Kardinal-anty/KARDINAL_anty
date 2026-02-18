@@ -220,6 +220,43 @@ impl CamoufoxManager {
     let env_vars = crate::camoufox::env_vars::config_to_env_vars(&fingerprint_config)
       .map_err(|e| format!("Failed to convert config to env vars: {e}"))?;
 
+    // Apply proxy settings to the Firefox profile's user.js if proxy is configured
+    if let Some(proxy_url) = &config.proxy {
+      if let Ok(parsed) = url::Url::parse(proxy_url) {
+        let proxy_host = parsed.host_str().unwrap_or("127.0.0.1");
+        let proxy_port = parsed.port().unwrap_or(8080);
+
+        log::info!(
+          "Applying proxy settings to Camoufox profile user.js: {}:{}",
+          proxy_host,
+          proxy_port
+        );
+
+        let user_js_path = std::path::Path::new(profile_path).join("user.js");
+        let mut preferences = Vec::new();
+
+        preferences.extend([
+          "user_pref(\"network.proxy.type\", 1);".to_string(),
+          format!("user_pref(\"network.proxy.http\", \"{proxy_host}\");"),
+          format!("user_pref(\"network.proxy.http_port\", {proxy_port});"),
+          format!("user_pref(\"network.proxy.ssl\", \"{proxy_host}\");"),
+          format!("user_pref(\"network.proxy.ssl_port\", {proxy_port});"),
+          "user_pref(\"network.proxy.socks\", \"\");".to_string(),
+          "user_pref(\"network.proxy.socks_port\", 0);".to_string(),
+          "user_pref(\"network.proxy.no_proxies_on\", \"\");".to_string(),
+          "user_pref(\"network.proxy.autoconfig_url\", \"\");".to_string(),
+          "user_pref(\"network.http.http3.enable\", false);".to_string(),
+          "user_pref(\"network.http.http3.enabled\", false);".to_string(),
+        ]);
+
+        if let Err(e) = std::fs::write(&user_js_path, preferences.join("\n")) {
+          log::error!("Failed to write proxy settings to user.js: {e}");
+        }
+      } else {
+        log::warn!("Failed to parse proxy URL: {proxy_url}");
+      }
+    }
+
     // Build command arguments
     // Note: We intentionally do NOT use -no-remote to allow opening URLs in existing instances
     // via Firefox's remote messaging mechanism. This enables "open in new tab" functionality

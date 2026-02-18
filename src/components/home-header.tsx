@@ -42,7 +42,7 @@ const HomeHeader = ({
   const handleLogoClick = () => {
     // Trigger the same URL handling logic as if the URL came from the system
     const event = new CustomEvent("url-open-request", {
-      detail: "https://kardinal-anty.com",
+      detail: "https://kardinal-anty.group/",
     });
     window.dispatchEvent(event);
   };
@@ -52,7 +52,7 @@ const HomeHeader = ({
         <button
           type="button"
           className="p-1 cursor-pointer"
-          title="Open kardinal-anty.com"
+          title="Open kardinal-anty.group"
           onClick={handleLogoClick}
         >
           <Logo className="w-10 h-10 transition-transform duration-300 ease-out will-change-transform hover:scale-110" />
