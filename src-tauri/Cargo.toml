@@ -2,7 +2,7 @@
 name = "kardinal-anty"
 version = "0.13.9"
 description = "KARDINAL Anty - Anti-Detect Browser"
-authors = ["CJ-aezakmi"]
+authors = ["Kardinal-anty"]
 edition = "2021"
 default-run = "kardinal-anty"
 

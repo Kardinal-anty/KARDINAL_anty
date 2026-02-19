@@ -205,7 +205,7 @@ impl AppAutoUpdater {
 
       // Build the release page URL
       let release_page_url = format!(
-        "https://github.com/CJ-aezakmi/kardinal/releases/tag/{}",
+        "https://github.com/Kardinal-anty/KARDINAL_anty/releases/tag/{}",
         latest_release.tag_name
       );
 
@@ -272,7 +272,7 @@ impl AppAutoUpdater {
   async fn fetch_app_releases(
     &self,
   ) -> Result<Vec<AppRelease>, Box<dyn std::error::Error + Send + Sync>> {
-    let url = "https://api.github.com/repos/CJ-aezakmi/kardinal/releases?per_page=100";
+    let url = "https://api.github.com/repos/Kardinal-anty/KARDINAL_anty/releases?per_page=100";
     let response = self
       .client
       .get(url)
