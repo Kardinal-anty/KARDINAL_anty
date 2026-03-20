@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
@@ -34,6 +35,7 @@ export function DeleteConfirmationDialog({
   profileIds,
   profiles = [],
 }: DeleteConfirmationDialogProps) {
+  const { t } = useTranslation();
   const handleConfirm = async () => {
     await onConfirm();
   };
@@ -47,7 +49,7 @@ export function DeleteConfirmationDialog({
           {profileIds && profileIds.length > 0 && (
             <div className="mt-4">
               <p className="text-sm font-medium mb-2">
-                Profiles to be deleted:
+                {t("deleteDialog.profilesToDelete")}
               </p>
               <div className="bg-muted rounded-md p-3 max-h-32 overflow-y-auto">
                 <ul className="space-y-1">
@@ -71,7 +73,7 @@ export function DeleteConfirmationDialog({
             onClick={onClose}
             disabled={isLoading}
           >
-            Cancel
+            {t("common.buttons.cancel")}
           </RippleButton>
           <LoadingButton
             variant="destructive"

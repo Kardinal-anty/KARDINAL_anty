@@ -13,6 +13,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { emit, listen } from "@tauri-apps/api/event";
 import type { Dispatch, SetStateAction } from "react";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { FiWifi } from "react-icons/fi";
 import { IoEllipsisHorizontal } from "react-icons/io5";
 import {
@@ -194,6 +195,7 @@ const TagsCell = React.memo<{
     setOpenTagsEditorFor,
     setTagsOverrides,
   }) => {
+    const { t } = useTranslation();
     const effectiveTags: string[] = Object.hasOwn(tagsOverrides, profile.id)
       ? tagsOverrides[profile.id]
       : (profile.tags ?? []);
@@ -354,7 +356,9 @@ const TagsCell = React.memo<{
             </Badge>
           ))}
           {effectiveTags.length === 0 && (
-            <span className="text-muted-foreground">No tags</span>
+            <span className="text-muted-foreground">
+              {t("profileTable.tags.noTags")}
+            </span>
           )}
           {hiddenCount > 0 && (
             <Badge variant="outline" className="px-2 py-0 text-xs">
@@ -405,7 +409,9 @@ const TagsCell = React.memo<{
             onChange={(opts) => void handleChange(opts)}
             creatable
             selectFirstItem={false}
-            placeholder={effectiveTags.length === 0 ? "Add tags" : ""}
+            placeholder={
+              effectiveTags.length === 0 ? t("profileTable.tags.addTags") : ""
+            }
             className={cn(
               "bg-transparent border-0! focus-within:ring-0!",
               "[&_div:first-child]:border-0! [&_div:first-child]:ring-0! [&_div:first-child]:focus-within:ring-0!",
@@ -497,6 +503,7 @@ const NoteCell = React.memo<{
     setOpenNoteEditorFor,
     setNoteOverrides,
   }) => {
+    const { t } = useTranslation();
     const effectiveNote: string | null = Object.hasOwn(
       noteOverrides,
       profile.id,
@@ -610,14 +617,14 @@ const NoteCell = React.memo<{
                     !effectiveNote && "text-muted-foreground",
                   )}
                 >
-                  {effectiveNote ? trimmedNote : "No Note"}
+                  {effectiveNote ? trimmedNote : t("profileTable.notes.noNote")}
                 </span>
               </button>
             </TooltipTrigger>
             {showTooltip && (
               <TooltipContent className="max-w-[320px]">
                 <p className="whitespace-pre-wrap wrap-break-word">
-                  {effectiveNote || "No Note"}
+                  {effectiveNote || t("profileTable.notes.noNote")}
                 </p>
               </TooltipContent>
             )}
@@ -654,7 +661,7 @@ const NoteCell = React.memo<{
               void onNoteChange(noteValue);
               setOpenNoteEditorFor(null);
             }}
-            placeholder="Add a note..."
+            placeholder={t("profileTable.notes.addNote")}
             className="w-full min-h-6 max-h-[200px] px-2 py-1 text-sm bg-transparent border-0 resize-none focus:outline-none focus:ring-0"
             style={{
               overflow: "auto",
@@ -714,6 +721,7 @@ export function ProfilesDataTable({
   onOpenProfileSyncDialog,
   onToggleProfileSync,
 }: ProfilesDataTableProps) {
+  const { t } = useTranslation();
   const { getTableSorting, updateSorting, isLoaded } = useTableSorting();
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
@@ -1093,12 +1101,14 @@ export function ProfilesDataTable({
       setRenameError(null);
     } catch (error) {
       setRenameError(
-        error instanceof Error ? error.message : "Failed to rename profile",
+        error instanceof Error
+          ? error.message
+          : t("profileTable.errors.failedRename"),
       );
     } finally {
       setIsRenamingSaving(false);
     }
-  }, [profileToRename, newProfileName, onRenameProfile]);
+  }, [profileToRename, newProfileName, onRenameProfile, t]);
 
   // Cancel inline rename on outside click
   React.useEffect(() => {
@@ -1381,7 +1391,7 @@ export function ProfilesDataTable({
                   meta.selectableCount !== 0
                 }
                 onCheckedChange={(value) => meta.handleToggleAll(!!value)}
-                aria-label="Select all"
+                aria-label={t("profileTable.select.selectAll")}
                 className="cursor-pointer"
               />
             </span>
@@ -1404,12 +1414,12 @@ export function ProfilesDataTable({
 
           if (isDisabled) {
             const tooltipMessage = isRunning
-              ? "Can't modify running profile"
+              ? t("profileTable.tooltips.cantModifyRunning")
               : isLaunching
-                ? "Can't modify profile while launching"
+                ? t("profileTable.tooltips.cantModifyLaunching")
                 : isStopping
-                  ? "Can't modify profile while stopping"
-                  : "Can't modify profile while browser is updating";
+                  ? t("profileTable.tooltips.cantModifyStopping")
+                  : t("profileTable.tooltips.cantModifyUpdating");
 
             return (
               <Tooltip>
@@ -1442,7 +1452,7 @@ export function ProfilesDataTable({
                     onCheckedChange={(value) =>
                       meta.handleCheckboxChange(profile.id, !!value)
                     }
-                    aria-label="Select row"
+                    aria-label={t("profileTable.select.selectRow")}
                     className="w-4 h-4"
                   />
                 </span>
@@ -1461,7 +1471,7 @@ export function ProfilesDataTable({
                   type="button"
                   className="flex justify-center items-center p-0 border-none cursor-pointer"
                   onClick={() => meta.handleIconClick(profile.id)}
-                  aria-label="Select profile"
+                  aria-label={t("profileTable.select.selectProfile")}
                 >
                   <span className="w-4 h-4 group">
                     {IconComponent && (
@@ -1548,9 +1558,9 @@ export function ProfilesDataTable({
                           <div className="w-3 h-3 rounded-full border border-current animate-spin border-t-transparent" />
                         </div>
                       ) : isRunning ? (
-                        "Stop"
+                        t("profiles.actions.stop")
                       ) : (
-                        "Launch"
+                        t("profiles.actions.launch")
                       )}
                     </RippleButton>
                   </span>
@@ -1574,7 +1584,7 @@ export function ProfilesDataTable({
               }
               className="justify-start p-0 h-auto font-semibold text-left cursor-pointer"
             >
-              Name
+              {t("common.labels.name")}
               {column.getIsSorted() === "asc" ? (
                 <LuChevronUp className="ml-2 w-4 h-4" />
               ) : column.getIsSorted() === "desc" ? (
@@ -1686,7 +1696,7 @@ export function ProfilesDataTable({
       },
       {
         id: "tags",
-        header: "Tags",
+        header: () => t("profileTable.columns.tags"),
         cell: ({ row, table }) => {
           const meta = table.options.meta as TableMeta;
           const profile = row.original;
@@ -1714,7 +1724,7 @@ export function ProfilesDataTable({
       },
       {
         id: "note",
-        header: "Note",
+        header: () => t("profiles.table.note"),
         cell: ({ row, table }) => {
           const meta = table.options.meta as TableMeta;
           const profile = row.original;
@@ -1740,7 +1750,7 @@ export function ProfilesDataTable({
       },
       {
         id: "proxy",
-        header: "Proxy",
+        header: () => t("profiles.table.proxy"),
         cell: ({ row, table }) => {
           const meta = table.options.meta as TableMeta;
           const profile = row.original;
@@ -1762,7 +1772,7 @@ export function ProfilesDataTable({
             : null;
           const displayName = effectiveProxy
             ? effectiveProxy.name
-            : "Not Selected";
+            : t("profileTable.proxy.notSelected");
           const profileHasProxy = Boolean(effectiveProxy);
           const tooltipText =
             profileHasProxy && effectiveProxy ? effectiveProxy.name : null;
@@ -1835,9 +1845,13 @@ export function ProfilesDataTable({
                     sideOffset={8}
                   >
                     <Command>
-                      <CommandInput placeholder="Search proxies..." />
+                      <CommandInput
+                        placeholder={t("profileTable.proxy.searchProxies")}
+                      />
                       <CommandList>
-                        <CommandEmpty>No proxies found.</CommandEmpty>
+                        <CommandEmpty>
+                          {t("profileTable.proxy.noProxiesFound")}
+                        </CommandEmpty>
                         <CommandGroup>
                           <CommandItem
                             value="__none__"
@@ -1853,7 +1867,7 @@ export function ProfilesDataTable({
                                   : "opacity-0",
                               )}
                             />
-                            No Proxy
+                            {t("profileTable.proxy.noProxy")}
                           </CommandItem>
                           {meta.storedProxies.map((proxy) => (
                             <CommandItem
@@ -1924,8 +1938,9 @@ export function ProfilesDataTable({
                   </span>
                 </TooltipTrigger>
                 <TooltipContent>
-                  Sync is disabled, last sync{" "}
-                  {formatRelativeTime(profile.last_sync)}
+                  {t("profileTable.tooltips.syncDisabledLastSync", {
+                    time: formatRelativeTime(profile.last_sync),
+                  })}
                 </TooltipContent>
               </Tooltip>
             );
@@ -1957,7 +1972,9 @@ export function ProfilesDataTable({
                     className="p-0 w-8 h-8"
                     disabled={!meta.isClient}
                   >
-                    <span className="sr-only">Open menu</span>
+                    <span className="sr-only">
+                      {t("profileTable.openMenu")}
+                    </span>
                     <IoEllipsisHorizontal className="w-4 h-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -1967,7 +1984,7 @@ export function ProfilesDataTable({
                       meta.onOpenTrafficDialog?.(profile.id);
                     }}
                   >
-                    View Network
+                    {t("profileTable.viewNetwork")}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => {
@@ -1975,7 +1992,7 @@ export function ProfilesDataTable({
                     }}
                     disabled={isDisabled}
                   >
-                    Assign to Group
+                    {t("profileTable.assignToGroup")}
                   </DropdownMenuItem>
                   {(profile.browser === "camoufox" ||
                     profile.browser === "wayfern") &&
@@ -1985,7 +2002,7 @@ export function ProfilesDataTable({
                           meta.onConfigureCamoufox?.(profile);
                         }}
                       >
-                        Change Fingerprint
+                        {t("profileTable.changeFingerprint")}
                       </DropdownMenuItem>
                     )}
                   {(profile.browser === "camoufox" ||
@@ -1996,7 +2013,7 @@ export function ProfilesDataTable({
                           meta.onCopyCookiesToProfile?.(profile);
                         }}
                       >
-                        Copy Cookies to Profile
+                        {t("profileTable.copyCookiesToProfile")}
                       </DropdownMenuItem>
                     )}
                   <DropdownMenuItem
@@ -2005,7 +2022,7 @@ export function ProfilesDataTable({
                     }}
                     disabled={isDisabled}
                   >
-                    Clone Profile
+                    {t("profiles.actions.clone")}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => {
@@ -2013,7 +2030,7 @@ export function ProfilesDataTable({
                     }}
                     disabled={isDisabled}
                   >
-                    Delete
+                    {t("common.buttons.delete")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -2022,7 +2039,7 @@ export function ProfilesDataTable({
         },
       },
     ],
-    [],
+    [t],
   );
 
   const table = useReactTable({
@@ -2102,7 +2119,7 @@ export function ProfilesDataTable({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No profiles found.
+                  {t("profileTable.empty")}
                 </TableCell>
               </TableRow>
             )}
@@ -2113,16 +2130,18 @@ export function ProfilesDataTable({
         isOpen={profileToDelete !== null}
         onClose={() => setProfileToDelete(null)}
         onConfirm={handleDelete}
-        title="Delete Profile"
-        description={`This action cannot be undone. This will permanently delete the profile "${profileToDelete?.name}" and all its associated data.`}
-        confirmButtonText="Delete Profile"
+        title={t("profileTable.deleteDialog.title")}
+        description={t("profileTable.deleteDialog.description", {
+          name: profileToDelete?.name,
+        })}
+        confirmButtonText={t("profileTable.deleteDialog.confirmButton")}
         isLoading={isDeleting}
       />
       <DataTableActionBar table={table}>
         <DataTableActionBarSelection table={table} />
         {onBulkGroupAssignment && (
           <DataTableActionBarAction
-            tooltip="Assign to Group"
+            tooltip={t("profileTable.assignToGroup")}
             onClick={onBulkGroupAssignment}
             size="icon"
           >
@@ -2131,7 +2150,7 @@ export function ProfilesDataTable({
         )}
         {onBulkProxyAssignment && (
           <DataTableActionBarAction
-            tooltip="Assign Proxy"
+            tooltip={t("profileTable.assignProxy")}
             onClick={onBulkProxyAssignment}
             size="icon"
           >
@@ -2140,7 +2159,7 @@ export function ProfilesDataTable({
         )}
         {onBulkCopyCookies && (
           <DataTableActionBarAction
-            tooltip="Copy Cookies"
+            tooltip={t("profileTable.copyCookies")}
             onClick={onBulkCopyCookies}
             size="icon"
           >
@@ -2149,7 +2168,7 @@ export function ProfilesDataTable({
         )}
         {onBulkDelete && (
           <DataTableActionBarAction
-            tooltip="Delete"
+            tooltip={t("common.buttons.delete")}
             onClick={onBulkDelete}
             size="icon"
             variant="destructive"

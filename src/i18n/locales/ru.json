@@ -50,6 +50,7 @@
       "type": "Тип",
       "status": "Статус",
       "actions": "Действия",
+      "sync": "Синхр.",
       "description": "Описание",
       "none": "Нет",
       "default": "По умолчанию",
@@ -204,25 +205,57 @@
   "proxies": {
     "title": "Прокси",
     "management": "Управление прокси",
+    "managementDescription": "Управление сохранёнными конфигурациями прокси для повторного использования в профилях",
     "add": "Добавить прокси",
     "edit": "Редактировать прокси",
+    "editProxy": "Редактировать прокси",
     "delete": "Удалить прокси",
+    "deleteProxy": "Удалить прокси",
+    "deleteConfirmDescription": "Это действие нельзя отменить. Прокси \"{{name}}\" будет удалён навсегда.",
+    "deletedSuccess": "Прокси успешно удалён",
+    "deleteFailed": "Не удалось удалить прокси",
+    "cannotDeleteInUse": "Нельзя удалить: используется {{count}} профилем",
+    "cannotDeleteInUse_plural": "Нельзя удалить: используется {{count}} профилями",
     "import": "Импорт",
     "export": "Экспорт",
+    "create": "Создать",
     "noProxies": "Прокси не настроены",
     "noProxiesDescription": "Добавьте прокси для маршрутизации трафика браузера через него.",
+    "noProxiesCreated": "Прокси ещё не созданы. Создайте первый прокси с помощью кнопки выше.",
+    "loadingProxies": "Загрузка прокси...",
+    "usage": "Использование",
+    "recommendedProxies": "Рекомендованные Прокси",
+    "recommendedProxiesTooltip": "Получи 3GB трафика от SX.ORG по промо KRD3",
     "form": {
       "name": "Название",
       "namePlaceholder": "Введите название прокси",
+      "nameLabel": "Название прокси",
+      "nameExample": "напр. Офисный прокси, Домашний VPN и т.д.",
       "type": "Тип",
+      "typeLabel": "Тип прокси",
+      "typePlaceholder": "Выберите тип прокси",
       "host": "Хост",
       "hostPlaceholder": "proxy.example.com",
+      "hostExample": "напр. 127.0.0.1",
       "port": "Порт",
       "portPlaceholder": "8080",
+      "portExample": "напр. 8080",
       "username": "Имя пользователя",
+      "usernameOptional": "Имя пользователя (необязательно)",
       "usernamePlaceholder": "Необязательно",
+      "usernameProxyPlaceholder": "Имя пользователя прокси",
       "password": "Пароль",
-      "passwordPlaceholder": "Необязательно"
+      "passwordOptional": "Пароль (необязательно)",
+      "passwordPlaceholder": "Необязательно",
+      "passwordProxyPlaceholder": "Пароль прокси",
+      "nameRequired": "Название прокси обязательно",
+      "hostPortRequired": "Хост и порт обязательны",
+      "updatedSuccess": "Прокси успешно обновлён",
+      "createdSuccess": "Прокси успешно создан",
+      "saveFailed": "Не удалось сохранить прокси: {{error}}",
+      "createNew": "Создать новый прокси",
+      "updateProxy": "Обновить прокси",
+      "createProxy": "Создать прокси"
     },
     "types": {
       "http": "HTTP",
@@ -234,21 +267,108 @@
       "checking": "Проверка прокси...",
       "valid": "Прокси действителен",
       "invalid": "Прокси недействителен",
-      "lastChecked": "Последняя проверка: {{time}}"
+      "lastChecked": "Последняя проверка: {{time}}",
+      "locationIs": "Местоположение вашего прокси:",
+      "unknown": "Неизвестно",
+      "failedError": "Ошибка проверки прокси: {{error}}",
+      "ip": "IP: {{ip}}",
+      "checked": "Проверено {{time}}",
+      "checkFailed": "Ошибка проверки прокси",
+      "failedTime": "Неудача {{time}}",
+      "checkValidity": "Проверить валидность прокси"
     },
     "sync": {
       "enabled": "Синхронизация включена",
-      "disabled": "Синхронизация выключена"
+      "disabled": "Синхронизация выключена",
+      "syncing": "Синхронизация...",
+      "synced": "Синхронизировано",
+      "syncedAt": "Синхронизировано {{time}}",
+      "waitingToSync": "Ожидание синхронизации",
+      "syncError": "Ошибка синхронизации",
+      "notSynced": "Не синхронизировано",
+      "enableSync": "Включить синхронизацию",
+      "disableSync": "Отключить синхронизацию",
+      "syncEnabledToast": "Синхронизация включена",
+      "syncDisabledToast": "Синхронизация отключена",
+      "syncToggleFailed": "Не удалось обновить синхронизацию",
+      "cannotDisableInUse": "Синхронизацию нельзя отключить, пока прокси используется синхронизированными профилями"
     }
+  },
+  "proxyImport": {
+    "title": "Импорт прокси",
+    "titleVpn": "Импорт VPN конфигурации",
+    "descriptionDropzone": "Импорт прокси из JSON или TXT файла, или VPN конфигураций (.conf/.ovpn)",
+    "descriptionPreview": "Просмотрите прокси для импорта",
+    "descriptionAmbiguous": "Некоторые прокси имеют неоднозначный формат. Пожалуйста, выберите правильный формат.",
+    "descriptionResult": "Импорт завершён",
+    "descriptionVpnPreview": "Просмотрите VPN конфигурацию для импорта",
+    "descriptionVpnResult": "Импорт VPN завершён",
+    "dropFile": "Перетащите файл прокси или VPN конфигурации",
+    "fileTypes": "(.json, .txt, .conf, .ovpn)",
+    "pasteClipboard": "Вставить из буфера обмена с помощью {{modKey}}+V",
+    "namePrefix": "Префикс имени",
+    "namePrefixDefault": "Imported",
+    "namingPattern": "Прокси будут названы \"{{prefix}} Proxy 1\", \"{{prefix}} Proxy 2\" и т.д.",
+    "proxiesToImport": "Прокси для импорта ({{count}})",
+    "invalidCount": "({{count}} недействительных)",
+    "ambiguousDescription": "Следующие прокси имеют неоднозначный формат. Пожалуйста, выберите правильную интерпретацию для каждого.",
+    "imported": "Импортировано:",
+    "skippedDuplicates": "Пропущено (дубликаты):",
+    "errors": "Ошибки:",
+    "errorsLabel": "Ошибки",
+    "vpnConfiguration": "Конфигурация {{type}}",
+    "vpnEndpoint": "Конечная точка: {{endpoint}}",
+    "vpnName": "Имя VPN",
+    "vpnNamePlaceholder": "Мой VPN",
+    "configPreview": "Предпросмотр конфигурации",
+    "vpnImportedSuccess": "VPN успешно импортирован",
+    "importFailed": "Ошибка импорта",
+    "cancel": "Отмена",
+    "back": "Назад",
+    "importCount": "Импортировать {{count}} прокси",
+    "continue": "Продолжить",
+    "done": "Готово",
+    "importVpn": "Импортировать VPN",
+    "noValidProxies": "В файле не найдено действительных прокси",
+    "failedProcessFile": "Не удалось обработать файл",
+    "failedReadFile": "Не удалось прочитать файл",
+    "invalidFileType": "Пожалуйста, перетащите файл .json, .txt, .conf или .ovpn",
+    "failedImportProxies": "Не удалось импортировать прокси",
+    "failedImportVpn": "Не удалось импортировать VPN конфигурацию"
+  },
+  "proxyExport": {
+    "title": "Экспорт прокси",
+    "description": "Экспорт конфигураций прокси в файл",
+    "exportFormat": "Формат экспорта",
+    "txtFormat": "TXT (формат URL)",
+    "preview": "Предпросмотр",
+    "loading": "Загрузка...",
+    "noProxies": "Нет прокси для экспорта",
+    "close": "Закрыть",
+    "copied": "Скопировано",
+    "copy": "Копировать",
+    "download": "Скачать",
+    "copiedToClipboard": "Скопировано в буфер обмена",
+    "failedExport": "Не удалось экспортировать прокси",
+    "failedCopy": "Не удалось скопировать в буфер обмена",
+    "downloaded": "Скачано {{filename}}"
   },
   "groups": {
     "title": "Группы",
     "management": "Управление группами",
+    "manageTitle": "Управление группами профилей",
+    "managementDescription": "Создавайте, редактируйте и удаляйте группы профилей. Профили без группы будут отображаться в группе \"По умолчанию\".",
     "add": "Добавить группу",
     "edit": "Редактировать группу",
     "delete": "Удалить группу",
     "noGroups": "Группы не созданы",
     "noGroupsDescription": "Создайте группу для организации профилей.",
+    "noGroupsCreated": "Группы ещё не созданы. Создайте первую группу с помощью кнопки выше.",
+    "loadingGroups": "Загрузка групп...",
+    "create": "Создать",
+    "editGroup": "Редактировать группу",
+    "deleteGroup": "Удалить группу",
+    "groupLoadFailed": "Не удалось загрузить группы",
     "form": {
       "name": "Название",
       "namePlaceholder": "Введите название группы"
@@ -258,7 +378,19 @@
     "assignProfiles": "Назначить профили",
     "sync": {
       "enabled": "Синхронизация включена",
-      "disabled": "Синхронизация выключена"
+      "disabled": "Синхронизация выключена",
+      "syncing": "Синхронизация...",
+      "synced": "Синхронизировано",
+      "syncedAt": "Синхронизировано {{time}}",
+      "waitingToSync": "Ожидание синхронизации",
+      "syncError": "Ошибка синхронизации",
+      "notSynced": "Не синхронизировано",
+      "enableSync": "Включить синхронизацию",
+      "disableSync": "Выключить синхронизацию",
+      "syncEnabledToast": "Синхронизация включена",
+      "syncDisabledToast": "Синхронизация выключена",
+      "syncToggleFailed": "Не удалось обновить синхронизацию",
+      "cannotDisableInUse": "Синхронизацию нельзя выключить, пока эта группа используется синхронизированными профилями"
     }
   },
   "sync": {
@@ -295,6 +427,21 @@
       "logoutConfirm": "Вы уверены, что хотите выйти? Облачная синхронизация будет остановлена.",
       "loginSuccess": "Вход выполнен успешно!",
       "logoutSuccess": "Выход выполнен успешно."
+    },
+    "selfHosted": {
+      "enterServerUrl": "Пожалуйста, введите URL сервера",
+      "connectionSuccessful": "Подключение успешно!",
+      "serverError": "Сервер ответил с ошибкой",
+      "connectionFailed": "Не удалось подключиться к серверу",
+      "settingsSaved": "Настройки синхронизации сохранены",
+      "saveFailed": "Не удалось сохранить настройки",
+      "disconnected": "Синхронизация отключена",
+      "disconnectFailed": "Не удалось отключиться",
+      "disconnect": "Отключить",
+      "testing": "Проверка...",
+      "testConnection": "Проверить соединение",
+      "hideToken": "Скрыть токен",
+      "showToken": "Показать токен"
     }
   },
   "integrations": {
@@ -307,17 +454,43 @@
       "port": "Порт",
       "token": "API токен",
       "copyToken": "Копировать токен",
-      "regenerateToken": "Перегенерировать токен"
+      "regenerateToken": "Перегенерировать токен",
+      "enableLabel": "Включить локальный API-сервер",
+      "enableDescription": "Управление профилями, группами и прокси через REST API.",
+      "serverRunning": "Сервер запущен",
+      "authToken": "Токен аутентификации",
+      "tokenCopied": "Токен скопирован",
+      "authHint": "Включите в заголовок Authorization: Bearer <token>",
+      "startedOnPort": "API-сервер запущен на порту {{port}}",
+      "stopped": "API-сервер остановлен",
+      "toggleFailed": "Не удалось переключить API-сервер"
     },
     "mcp": {
       "title": "MCP сервер",
+      "tabLabel": "MCP (AI-ассистенты)",
       "description": "Включите MCP (Model Context Protocol) сервер для интеграции с AI-ассистентами.",
       "enabled": "MCP включён",
       "disabled": "MCP выключен",
       "port": "Порт",
       "token": "MCP токен",
       "config": "Конфигурация MCP",
-      "copyConfig": "Копировать конфигурацию"
+      "copyConfig": "Копировать конфигурацию",
+      "enableLabel": "Включить MCP-сервер (Model Context Protocol)",
+      "enableDescription": "Позволяет AI-ассистентам, таким как Claude Desktop, управлять браузерами.",
+      "acceptTermsFirst": "(Сначала примите условия Wayfern в Настройках)",
+      "claudeDesktopConfig": "Конфигурация Claude Desktop",
+      "configInstructions": "Скопируйте эту конфигурацию в файл настроек Claude Desktop по адресу",
+      "configCopied": "Конфигурация скопирована",
+      "availableTools": "Доступные инструменты",
+      "toolListProfiles": "list_profiles — Список профилей браузера",
+      "toolRunProfile": "run_profile — Запустить браузер",
+      "toolKillProfile": "kill_profile — Остановить запущенный браузер",
+      "toolGetProfileStatus": "get_profile_status — Проверить, запущен ли браузер",
+      "toolManageGroups": "list_groups, create_group и др. — Управление группами",
+      "toolManageProxies": "list_proxies, create_proxy и др. — Управление прокси",
+      "startedOnPort": "MCP-сервер запущен на порту {{port}}",
+      "stopped": "MCP-сервер остановлен",
+      "toggleFailed": "Не удалось переключить MCP-сервер"
     }
   },
   "import": {
@@ -480,6 +653,255 @@
     "wayfern": "Wayfern"
   },
   "fingerprint": {
-    "crossOsWarning": "Подмена другой операционной системы сложнее — системные API труднее замаскировать, что упрощает обнаружение несоответствий веб-сайтами. Ни один антидетект-браузер не может идеально подменить все детали при смене операционной системы."
+    "crossOsWarning": "Подмена другой операционной системы сложнее — системные API труднее замаскировать, что упрощает обнаружение несоответствий веб-сайтами. Ни один антидетект-браузер не может идеально подменить все детали при смене операционной системы.",
+    "crossOsLimitations": "Подмена ОС имеет ограничения. Системные API могут по-прежнему отражать вашу реальную операционную систему, а некоторые функции могут работать с ограничениями.",
+    "enterAsJson": "Введите {{title}} в формате JSON",
+    "os": {
+      "title": "Отпечаток операционной системы",
+      "selectPlaceholder": "Выберите операционную систему"
+    },
+    "randomize": {
+      "label": "Генерировать случайный отпечаток при каждом запуске",
+      "description": "При включении новый отпечаток будет генерироваться при каждом запуске браузера.",
+      "descriptionWithSave": "При включении новый отпечаток будет генерироваться при каждом запуске браузера. Сгенерированный отпечаток сохраняется для справки."
+    },
+    "alerts": {
+      "readOnlyDisabled": "Редактирование отпечатка отключено, так как профиль сейчас запущен. Остановите профиль для внесения изменений.",
+      "readOnlyDisabledShort": "Редактирование отпечатка отключено, так как профиль сейчас запущен.",
+      "randomizeDisabled": "Редактирование отпечатка отключено, так как включена случайная генерация. Отключите опцию выше для ручного редактирования конфигурации отпечатка.",
+      "randomizeDisabledShort": "Редактирование отпечатка отключено, так как включена случайная генерация.",
+      "editWarning": "⚠️ Предупреждение: редактируйте эти параметры только если вы знаете, что делаете. Некорректные значения могут нарушить работу сайтов, позволить им обнаружить вас и привести к трудно отлаживаемым ошибкам.",
+      "editWarningShort": "Предупреждение: редактируйте эти параметры только если вы знаете, что делаете."
+    },
+    "tabs": {
+      "automatic": "Автоматически",
+      "manual": "Вручную"
+    },
+    "blocking": {
+      "title": "Параметры блокировки",
+      "blockImages": "Блокировать изображения",
+      "blockWebRTC": "Блокировать WebRTC",
+      "blockWebGL": "Блокировать WebGL"
+    },
+    "navigator": {
+      "title": "Свойства навигатора",
+      "userAgent": "User Agent",
+      "platform": "Платформа",
+      "appVersion": "Версия приложения",
+      "osCpu": "ЦПУ ОС",
+      "hardwareConcurrency": "Потоки процессора",
+      "maxTouchPoints": "Макс. точек касания",
+      "doNotTrack": "Не отслеживать",
+      "selectDnt": "Выберите значение DNT",
+      "dntAllowed": "0 (отслеживание разрешено)",
+      "dntNotAllowed": "1 (отслеживание запрещено)",
+      "dntUnspecified": "не указано",
+      "language": "Язык"
+    },
+    "screen": {
+      "title": "Свойства экрана",
+      "width": "Ширина экрана",
+      "height": "Высота экрана",
+      "availWidth": "Доступная ширина",
+      "availHeight": "Доступная высота",
+      "colorDepth": "Глубина цвета",
+      "pixelDepth": "Глубина пикселей",
+      "resolution": "Разрешение экрана",
+      "maxWidth": "Макс. ширина",
+      "maxHeight": "Макс. высота",
+      "minWidth": "Мин. ширина",
+      "minHeight": "Мин. высота"
+    },
+    "window": {
+      "title": "Свойства окна",
+      "outerWidth": "Внеш. ширина",
+      "outerHeight": "Внеш. высота",
+      "innerWidth": "Внутр. ширина",
+      "innerHeight": "Внутр. высота",
+      "screenX": "Позиция X",
+      "screenY": "Позиция Y"
+    },
+    "geolocation": {
+      "title": "Геолокация",
+      "latitude": "Широта",
+      "longitude": "Долгота",
+      "accuracy": "Точность (метры)"
+    },
+    "timezone": {
+      "title": "Часовой пояс",
+      "timezoneIana": "Часовой пояс (IANA)",
+      "offset": "Смещение (минуты от UTC)"
+    },
+    "locale": {
+      "title": "Локаль",
+      "language": "Язык",
+      "region": "Регион",
+      "script": "Скрипт"
+    },
+    "webgl": {
+      "title": "Свойства WebGL",
+      "vendor": "Производитель WebGL",
+      "renderer": "Рендерер WebGL",
+      "parameters": "Параметры WebGL",
+      "parameters2": "Параметры WebGL2",
+      "shaderPrecisionFormats": "Форматы точности шейдеров WebGL",
+      "shaderPrecisionFormats2": "Форматы точности шейдеров WebGL2",
+      "parametersJson": "Параметры WebGL (JSON)"
+    },
+    "fonts": {
+      "title": "Шрифты",
+      "titleJsonArray": "Шрифты (JSON массив)"
+    },
+    "battery": {
+      "title": "Батарея",
+      "charging": "Зарядка",
+      "chargingTime": "Время зарядки",
+      "dischargingTime": "Время разрядки",
+      "level": "Уровень (0-1)"
+    },
+    "autoLocation": "Автоматически настраивать информацию о местоположении на основе конфигурации прокси или вашего соединения, если прокси не указан",
+    "autoLocationShort": "Автоматически настраивать местоположение по прокси или соединению",
+    "userAgentPlatform": {
+      "title": "User Agent и платформа",
+      "platformVersion": "Версия платформы",
+      "brand": "Бренд",
+      "brandVersion": "Версия бренда"
+    },
+    "hardware": {
+      "title": "Свойства оборудования",
+      "deviceMemory": "Память устройства (ГБ)",
+      "devicePixelRatio": "Соотношение пикселей устройства"
+    },
+    "languageLocale": {
+      "title": "Язык и локаль",
+      "primaryLanguage": "Основной язык (navigator.language)",
+      "languages": "Языки (JSON массив)"
+    },
+    "timezoneGeolocation": {
+      "title": "Часовой пояс и геолокация",
+      "description": "Эти значения переопределяют API часового пояса и геолокации браузера."
+    },
+    "canvas": {
+      "title": "Отпечаток Canvas",
+      "noiseSeed": "Зерно шума Canvas",
+      "noiseSeedDescription": "Это зерно используется для генерации согласованного, но уникального отпечатка canvas. Каждый профиль должен иметь своё зерно."
+    },
+    "audio": {
+      "title": "Свойства аудио",
+      "sampleRate": "Частота дискретизации",
+      "maxChannelCount": "Макс. кол-во каналов"
+    },
+    "vendorInfo": {
+      "title": "Информация о производителе",
+      "vendor": "Производитель",
+      "vendorSub": "Суб-производитель",
+      "productSub": "Суб-продукт"
+    }
+  },
+  "page": {
+    "noProfilesForUrls": "Нет доступных профилей. Пожалуйста, сначала создайте профиль перед открытием URL.",
+    "failedLaunchBrowser": "Не удалось запустить браузер:",
+    "failedCloneProfile": "Не удалось клонировать профиль:",
+    "failedDeleteProfile": "Не удалось удалить профиль:",
+    "failedRenameProfile": "Не удалось переименовать профиль:",
+    "failedKillBrowser": "Не удалось остановить браузер:",
+    "failedDeleteSelectedProfiles": "Не удалось удалить выбранные профили:",
+    "cannotDeleteWhileRunning": "Невозможно удалить профиль, пока браузер запущен. Пожалуйста, сначала остановите браузер.",
+    "cookieCopyOnlyWayfernCamoufox": "Копирование cookie работает только с профилями Wayfern и Camoufox",
+    "syncDisabled": "Синхронизация отключена",
+    "syncEnabled": "Синхронизация включена",
+    "syncDisabledDescription": "Синхронизация профиля отключена",
+    "syncEnabledDescription": "Синхронизация профиля включена",
+    "failedUpdateSyncSettings": "Не удалось обновить настройки синхронизации",
+    "deprecatedProfilesTitle": "Некоторые профили скоро будут устаревшими",
+    "deprecatedProfilesDescription": "Следующие профили скоро будут устаревшими: {{names}}. Ночные сборки (кроме Firefox Developer Edition) будут удалены в предстоящих версиях. Пожалуйста, проверьте GitHub для инструкций по миграции.",
+    "browserSupportEndingTitle": "Поддержка браузеров скоро прекратится",
+    "browserSupportEndingDescription": "Поддержка следующих профилей будет прекращена 15 марта 2026 года: {{names}}. Пожалуйста, перейдите на профили Wayfern или Camoufox.",
+    "learnMore": "Подробнее",
+    "deleteSelectedProfiles": "Удалить выбранные профили",
+    "deleteSelectedProfilesDescription": "Это действие нельзя отменить. Будет безвозвратно удалено профилей: {{count}}, а также все связанные данные.",
+    "deleteNProfiles": "Удалить профилей: {{count}}",
+    "failedCreateProfile": "Не удалось создать профиль:",
+    "failedUpdateCamoufoxConfig": "Не удалось обновить конфигурацию Camoufox:",
+    "failedUpdateWayfernConfig": "Не удалось обновить конфигурацию Wayfern:"
+  },
+  "profileSelector": {
+    "chooseProfile": "Выбор профиля",
+    "openingUrl": "Открытие URL:",
+    "urlCopied": "URL скопирован в буфер обмена!",
+    "selectProfile": "Выберите профиль:",
+    "noProfiles": "Нет доступных профилей. Пожалуйста, сначала создайте профиль.",
+    "noProfilesHint": "Закройте это окно и создайте профиль из главного окна, чтобы начать.",
+    "chooseAProfile": "Выберите профиль",
+    "proxy": "Прокси",
+    "running": "Запущен",
+    "unavailable": "Недоступен",
+    "open": "Открыть"
+  },
+  "profileTable": {
+    "columns": {
+      "tags": "Теги"
+    },
+    "tags": {
+      "noTags": "Нет тегов",
+      "addTags": "Добавить теги"
+    },
+    "notes": {
+      "noNote": "Нет заметки",
+      "addNote": "Добавить заметку..."
+    },
+    "proxy": {
+      "notSelected": "Не выбран",
+      "searchProxies": "Поиск прокси...",
+      "noProxiesFound": "Прокси не найдены.",
+      "noProxy": "Без прокси"
+    },
+    "select": {
+      "selectAll": "Выбрать все",
+      "selectRow": "Выбрать строку",
+      "selectProfile": "Выбрать профиль"
+    },
+    "tooltips": {
+      "cantModifyRunning": "Нельзя изменить запущенный профиль",
+      "cantModifyLaunching": "Нельзя изменить профиль во время запуска",
+      "cantModifyStopping": "Нельзя изменить профиль во время остановки",
+      "cantModifyUpdating": "Нельзя изменить профиль во время обновления браузера",
+      "syncDisabledLastSync": "Синхронизация отключена, последняя синхронизация {{time}}"
+    },
+    "empty": "Профили не найдены.",
+    "openMenu": "Открыть меню",
+    "viewNetwork": "Просмотр сети",
+    "assignToGroup": "Назначить группу",
+    "changeFingerprint": "Изменить отпечаток",
+    "copyCookiesToProfile": "Копировать Cookie в профиль",
+    "assignProxy": "Назначить прокси",
+    "copyCookies": "Копировать Cookie",
+    "deleteDialog": {
+      "title": "Удалить профиль",
+      "description": "Это действие нельзя отменить. Профиль \"{{name}}\" и все связанные данные будут безвозвратно удалены.",
+      "confirmButton": "Удалить профиль"
+    },
+    "errors": {
+      "failedRename": "Не удалось переименовать профиль"
+    }
+  },
+  "profileSync": {
+    "title": "Синхронизация профиля",
+    "description": "Управление настройками синхронизации для \"{{name}}\"",
+    "configureFirst": "Сначала настройте службу синхронизации",
+    "syncEnabledSyncing": "Синхронизация включена — синхронизация...",
+    "syncDisabled": "Синхронизация отключена",
+    "failedUpdateSettings": "Не удалось обновить настройки синхронизации",
+    "syncQueued": "Синхронизация поставлена в очередь",
+    "failedQueueSync": "Не удалось поставить синхронизацию в очередь",
+    "syncEnabled": "Синхронизация включена",
+    "syncAcrossDevices": "Синхронизировать этот профиль между устройствами",
+    "lastSynced": "Последняя синхронизация",
+    "configureSyncService": "Настроить службу синхронизации",
+    "synced": "Синхронизировано",
+    "pending": "Ожидание",
+    "never": "Никогда",
+    "syncNow": "Синхронизировать сейчас",
+    "notConfigured": "Служба синхронизации не настроена."
   }
 }

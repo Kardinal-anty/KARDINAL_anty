@@ -2,6 +2,7 @@
 
 import { invoke } from "@tauri-apps/api/core";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { LoadingButton } from "@/components/loading-button";
 import {
@@ -43,6 +44,7 @@ export function ProxyFormDialog({
   onClose,
   editingProxy,
 }: ProxyFormDialogProps) {
+  const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<ProxyFormData>({
     name: "",
@@ -84,12 +86,12 @@ export function ProxyFormDialog({
 
   const handleSubmit = useCallback(async () => {
     if (!formData.name.trim()) {
-      toast.error("Proxy name is required");
+      toast.error(t("proxies.form.nameRequired"));
       return;
     }
 
     if (!formData.host.trim() || !formData.port) {
-      toast.error("Host and port are required");
+      toast.error(t("proxies.form.hostPortRequired"));
       return;
     }
 
@@ -110,14 +112,14 @@ export function ProxyFormDialog({
           name: formData.name.trim(),
           proxySettings,
         });
-        toast.success("Proxy updated successfully");
+        toast.success(t("proxies.form.updatedSuccess"));
       } else {
         // Create new proxy
         await invoke("create_stored_proxy", {
           name: formData.name.trim(),
           proxySettings,
         });
-        toast.success("Proxy created successfully");
+        toast.success(t("proxies.form.createdSuccess"));
       }
 
       onClose();
@@ -125,11 +127,11 @@ export function ProxyFormDialog({
       console.error("Failed to save proxy:", error);
       const errorMessage =
         error instanceof Error ? error.message : String(error);
-      toast.error(`Failed to save proxy: ${errorMessage}`);
+      toast.error(t("proxies.form.saveFailed", { error: errorMessage }));
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData, editingProxy, onClose]);
+  }, [formData, editingProxy, onClose, t]);
 
   const handleClose = useCallback(() => {
     if (!isSubmitting) {
@@ -148,26 +150,26 @@ export function ProxyFormDialog({
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>
-            {editingProxy ? "Edit Proxy" : "Create New Proxy"}
+            {editingProxy ? t("proxies.edit") : t("proxies.form.createNew")}
           </DialogTitle>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Label htmlFor="proxy-name">Proxy Name</Label>
+            <Label htmlFor="proxy-name">{t("proxies.form.nameLabel")}</Label>
             <Input
               id="proxy-name"
               value={formData.name}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
-              placeholder="e.g. Office Proxy, Home VPN, etc."
+              placeholder={t("proxies.form.nameExample")}
               disabled={isSubmitting}
             />
           </div>
 
           <div className="grid gap-2">
-            <Label>Proxy Type</Label>
+            <Label>{t("proxies.form.typeLabel")}</Label>
             <Select
               value={formData.proxy_type}
               onValueChange={(value) =>
@@ -176,7 +178,7 @@ export function ProxyFormDialog({
               disabled={isSubmitting}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select proxy type" />
+                <SelectValue placeholder={t("proxies.form.typePlaceholder")} />
               </SelectTrigger>
               <SelectContent>
                 {["http", "https", "socks4", "socks5"].map((type) => (
@@ -190,20 +192,20 @@ export function ProxyFormDialog({
 
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="proxy-host">Host</Label>
+              <Label htmlFor="proxy-host">{t("proxies.form.host")}</Label>
               <Input
                 id="proxy-host"
                 value={formData.host}
                 onChange={(e) =>
                   setFormData({ ...formData, host: e.target.value })
                 }
-                placeholder="e.g. 127.0.0.1"
+                placeholder={t("proxies.form.hostExample")}
                 disabled={isSubmitting}
               />
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="proxy-port">Port</Label>
+              <Label htmlFor="proxy-port">{t("proxies.form.port")}</Label>
               <Input
                 id="proxy-port"
                 type="number"
@@ -214,7 +216,7 @@ export function ProxyFormDialog({
                     port: parseInt(e.target.value, 10) || 0,
                   })
                 }
-                placeholder="e.g. 8080"
+                placeholder={t("proxies.form.portExample")}
                 min="1"
                 max="65535"
                 disabled={isSubmitting}
@@ -224,7 +226,9 @@ export function ProxyFormDialog({
 
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="proxy-username">Username (optional)</Label>
+              <Label htmlFor="proxy-username">
+                {t("proxies.form.usernameOptional")}
+              </Label>
               <Input
                 id="proxy-username"
                 value={formData.username}
@@ -234,13 +238,15 @@ export function ProxyFormDialog({
                     username: e.target.value,
                   })
                 }
-                placeholder="Proxy username"
+                placeholder={t("proxies.form.usernameProxyPlaceholder")}
                 disabled={isSubmitting}
               />
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="proxy-password">Password (optional)</Label>
+              <Label htmlFor="proxy-password">
+                {t("proxies.form.passwordOptional")}
+              </Label>
               <Input
                 id="proxy-password"
                 type="password"
@@ -251,7 +257,7 @@ export function ProxyFormDialog({
                     password: e.target.value,
                   })
                 }
-                placeholder="Proxy password"
+                placeholder={t("proxies.form.passwordProxyPlaceholder")}
                 disabled={isSubmitting}
               />
             </div>
@@ -264,14 +270,16 @@ export function ProxyFormDialog({
             onClick={handleClose}
             disabled={isSubmitting}
           >
-            Cancel
+            {t("common.buttons.cancel")}
           </RippleButton>
           <LoadingButton
             isLoading={isSubmitting}
             onClick={handleSubmit}
             disabled={!isFormValid}
           >
-            {editingProxy ? "Update Proxy" : "Create Proxy"}
+            {editingProxy
+              ? t("proxies.form.updateProxy")
+              : t("proxies.form.createProxy")}
           </LoadingButton>
         </DialogFooter>
       </DialogContent>

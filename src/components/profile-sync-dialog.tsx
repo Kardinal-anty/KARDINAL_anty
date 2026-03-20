@@ -2,6 +2,7 @@
 
 import { invoke } from "@tauri-apps/api/core";
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@/components/loading-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,7 @@ export function ProfileSyncDialog({
   profile,
   onSyncConfigOpen,
 }: ProfileSyncDialogProps) {
+  const { t } = useTranslation();
   const [isSaving, setIsSaving] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncEnabled, setSyncEnabled] = useState(
@@ -68,7 +70,7 @@ export function ProfileSyncDialog({
     if (!profile) return;
 
     if (!hasConfig) {
-      showErrorToast("Please configure sync service first");
+      showErrorToast(t("profileSync.configureFirst"));
       onSyncConfigOpen();
       onClose();
       return;
@@ -82,21 +84,23 @@ export function ProfileSyncDialog({
       });
       setSyncEnabled(!syncEnabled);
       showSuccessToast(
-        !syncEnabled ? "Sync enabled - syncing now..." : "Sync disabled",
+        !syncEnabled
+          ? t("profileSync.syncEnabledSyncing")
+          : t("profileSync.syncDisabled"),
       );
     } catch (error) {
       console.error("Failed to toggle sync:", error);
-      showErrorToast("Failed to update sync settings");
+      showErrorToast(t("profileSync.failedUpdateSettings"));
     } finally {
       setIsSaving(false);
     }
-  }, [profile, syncEnabled, hasConfig, onSyncConfigOpen, onClose]);
+  }, [profile, syncEnabled, hasConfig, onSyncConfigOpen, onClose, t]);
 
   const handleSyncNow = useCallback(async () => {
     if (!profile) return;
 
     if (!hasConfig) {
-      showErrorToast("Please configure sync service first");
+      showErrorToast(t("profileSync.configureFirst"));
       onSyncConfigOpen();
       onClose();
       return;
@@ -105,17 +109,17 @@ export function ProfileSyncDialog({
     setIsSyncing(true);
     try {
       await invoke("request_profile_sync", { profileId: profile.id });
-      showSuccessToast("Sync queued");
+      showSuccessToast(t("profileSync.syncQueued"));
     } catch (error) {
       console.error("Failed to queue sync:", error);
-      showErrorToast("Failed to queue sync");
+      showErrorToast(t("profileSync.failedQueueSync"));
     } finally {
       setIsSyncing(false);
     }
-  }, [profile, hasConfig, onSyncConfigOpen, onClose]);
+  }, [profile, hasConfig, onSyncConfigOpen, onClose, t]);
 
   const formatLastSync = (timestamp?: number) => {
-    if (!timestamp) return "Never";
+    if (!timestamp) return t("profileSync.never");
     const date = new Date(timestamp * 1000);
     return date.toLocaleString();
   };
@@ -126,9 +130,9 @@ export function ProfileSyncDialog({
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Profile Sync</DialogTitle>
+          <DialogTitle>{t("profileSync.title")}</DialogTitle>
           <DialogDescription>
-            Manage sync settings for &quot;{profile.name}&quot;
+            {t("profileSync.description", { name: profile.name })}
           </DialogDescription>
         </DialogHeader>
 
@@ -140,7 +144,7 @@ export function ProfileSyncDialog({
           <div className="grid gap-4 py-4">
             {!hasConfig && (
               <div className="p-3 text-sm rounded-md bg-muted">
-                <p className="mb-2">Sync service not configured.</p>
+                <p className="mb-2">{t("profileSync.notConfigured")}</p>
                 <Button
                   variant="outline"
                   size="sm"
@@ -149,7 +153,7 @@ export function ProfileSyncDialog({
                     onClose();
                   }}
                 >
-                  Configure Sync Service
+                  {t("profileSync.configureSyncService")}
                 </Button>
               </div>
             )}
@@ -158,9 +162,11 @@ export function ProfileSyncDialog({
               <>
                 <div className="flex justify-between items-center">
                   <div className="space-y-0.5">
-                    <Label htmlFor="sync-enabled">Sync Enabled</Label>
+                    <Label htmlFor="sync-enabled">
+                      {t("profileSync.syncEnabled")}
+                    </Label>
                     <p className="text-sm text-muted-foreground">
-                      Sync this profile across devices
+                      {t("profileSync.syncAcrossDevices")}
                     </p>
                   </div>
                   <Checkbox
@@ -172,7 +178,7 @@ export function ProfileSyncDialog({
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Last Synced</Label>
+                  <Label>{t("profileSync.lastSynced")}</Label>
                   <div className="flex gap-2 items-center">
                     <Badge variant="outline">
                       {formatLastSync(profile.last_sync)}
@@ -181,7 +187,9 @@ export function ProfileSyncDialog({
                       <Badge
                         variant={profile.last_sync ? "default" : "secondary"}
                       >
-                        {profile.last_sync ? "Synced" : "Pending"}
+                        {profile.last_sync
+                          ? t("profileSync.synced")
+                          : t("profileSync.pending")}
                       </Badge>
                     )}
                   </div>
@@ -193,11 +201,11 @@ export function ProfileSyncDialog({
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>
-            Close
+            {t("common.buttons.close")}
           </Button>
           {hasConfig && syncEnabled && (
             <LoadingButton onClick={handleSyncNow} isLoading={isSyncing}>
-              Sync Now
+              {t("profileSync.syncNow")}
             </LoadingButton>
           )}
         </DialogFooter>

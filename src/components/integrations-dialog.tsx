@@ -3,6 +3,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import { Eye, EyeOff } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -42,6 +43,7 @@ export function IntegrationsDialog({
   isOpen,
   onClose,
 }: IntegrationsDialogProps) {
+  const { t } = useTranslation();
   const [settings, setSettings] = useState<AppSettings>({
     api_enabled: false,
     api_port: 10108,
@@ -123,7 +125,7 @@ export function IntegrationsDialog({
           settings: { ...settings, api_enabled: true },
         });
         setSettings(next);
-        showSuccessToast(`API server started on port ${port}`);
+        showSuccessToast(t("integrations.api.startedOnPort", { port }));
       } else {
         await invoke("stop_api_server");
         setApiServerPort(null);
@@ -131,11 +133,11 @@ export function IntegrationsDialog({
           settings: { ...settings, api_enabled: false, api_token: null },
         });
         setSettings(next);
-        showSuccessToast("API server stopped");
+        showSuccessToast(t("integrations.api.stopped"));
       }
     } catch (e) {
       console.error("Failed to toggle API:", e);
-      showErrorToast("Failed to toggle API server", {
+      showErrorToast(t("integrations.api.toggleFailed"), {
         description: e instanceof Error ? e.message : "Unknown error",
       });
     } finally {
@@ -153,7 +155,7 @@ export function IntegrationsDialog({
         });
         setSettings(next);
         loadMcpConfig();
-        showSuccessToast(`MCP server started on port ${port}`);
+        showSuccessToast(t("integrations.mcp.startedOnPort", { port }));
       } else {
         await invoke("stop_mcp_server");
         const next = await invoke<AppSettings>("save_app_settings", {
@@ -161,11 +163,11 @@ export function IntegrationsDialog({
         });
         setSettings(next);
         setMcpConfig(null);
-        showSuccessToast("MCP server stopped");
+        showSuccessToast(t("integrations.mcp.stopped"));
       }
     } catch (e) {
       console.error("Failed to toggle MCP server:", e);
-      showErrorToast("Failed to toggle MCP server", {
+      showErrorToast(t("integrations.mcp.toggleFailed"), {
         description: e instanceof Error ? e.message : "Unknown error",
       });
     } finally {
@@ -216,13 +218,15 @@ export function IntegrationsDialog({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-xl">
         <DialogHeader>
-          <DialogTitle>Integrations</DialogTitle>
+          <DialogTitle>{t("integrations.title")}</DialogTitle>
         </DialogHeader>
 
         <Tabs defaultValue="api" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="api">Local API</TabsTrigger>
-            <TabsTrigger value="mcp">MCP (AI Assistants)</TabsTrigger>
+            <TabsTrigger value="api">{t("integrations.api.title")}</TabsTrigger>
+            <TabsTrigger value="mcp">
+              {t("integrations.mcp.tabLabel")}
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="api" className="space-y-4 mt-4">
@@ -238,10 +242,10 @@ export function IntegrationsDialog({
                   htmlFor="api-enabled"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Enable Local API Server
+                  {t("integrations.api.enableLabel")}
                 </Label>
                 <p className="text-xs text-muted-foreground">
-                  Allow managing profiles, groups, and proxies via REST API.
+                  {t("integrations.api.enableDescription")}
                 </p>
               </div>
             </div>
@@ -249,7 +253,9 @@ export function IntegrationsDialog({
             {settings.api_enabled && (
               <div className="space-y-4 p-4 rounded-md border bg-muted/40">
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium">Port</Label>
+                  <Label className="text-sm font-medium">
+                    {t("integrations.api.port")}
+                  </Label>
                   <div className="flex items-center space-x-2">
                     <Input
                       value={apiServerPort ?? settings.api_port}
@@ -257,14 +263,14 @@ export function IntegrationsDialog({
                       className="w-24 font-mono"
                     />
                     <span className="text-xs text-muted-foreground">
-                      Server is running
+                      {t("integrations.api.serverRunning")}
                     </span>
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <Label className="text-sm font-medium">
-                    Authentication Token
+                    {t("integrations.api.authToken")}
                   </Label>
                   <div className="flex items-center space-x-2">
                     <div className="relative flex-1">
@@ -290,11 +296,11 @@ export function IntegrationsDialog({
                     </div>
                     <CopyToClipboard
                       text={settings.api_token ?? ""}
-                      successMessage="Token copied"
+                      successMessage={t("integrations.api.tokenCopied")}
                     />
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Include in Authorization header: Bearer {"<token>"}
+                    {t("integrations.api.authHint")}
                   </p>
                 </div>
               </div>
@@ -314,13 +320,13 @@ export function IntegrationsDialog({
                   htmlFor="mcp-enabled"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Enable MCP Server (Model Context Protocol)
+                  {t("integrations.mcp.enableLabel")}
                 </Label>
                 <p className="text-xs text-muted-foreground">
-                  Allow AI assistants like Claude Desktop to control browsers.
+                  {t("integrations.mcp.enableDescription")}
                   {!termsAccepted && (
                     <span className="ml-1 text-orange-600">
-                      (Accept Wayfern terms in Settings first)
+                      {t("integrations.mcp.acceptTermsFirst")}
                     </span>
                   )}
                 </p>
@@ -331,11 +337,10 @@ export function IntegrationsDialog({
               <div className="space-y-4 p-4 rounded-md border bg-muted/40">
                 <div className="space-y-2">
                   <Label className="text-sm font-medium">
-                    Claude Desktop Configuration
+                    {t("integrations.mcp.claudeDesktopConfig")}
                   </Label>
                   <p className="text-xs text-muted-foreground">
-                    Copy this configuration to your Claude Desktop config file
-                    at{" "}
+                    {t("integrations.mcp.configInstructions")}{" "}
                     <code className="bg-muted px-1 rounded">
                       ~/.config/claude/claude_desktop_config.json
                     </code>
@@ -364,20 +369,22 @@ export function IntegrationsDialog({
                     </Button>
                     <CopyToClipboard
                       text={getFormattedMcpConfig()}
-                      successMessage="Configuration copied"
+                      successMessage={t("integrations.mcp.configCopied")}
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium">Available Tools</Label>
+                  <Label className="text-sm font-medium">
+                    {t("integrations.mcp.availableTools")}
+                  </Label>
                   <ul className="list-disc ml-5 space-y-0.5 text-xs text-muted-foreground">
-                    <li>list_profiles - List browser profiles</li>
-                    <li>run_profile - Launch a browser</li>
-                    <li>kill_profile - Stop a running browser</li>
-                    <li>get_profile_status - Check if browser is running</li>
-                    <li>list_groups, create_group, etc. - Manage groups</li>
-                    <li>list_proxies, create_proxy, etc. - Manage proxies</li>
+                    <li>{t("integrations.mcp.toolListProfiles")}</li>
+                    <li>{t("integrations.mcp.toolRunProfile")}</li>
+                    <li>{t("integrations.mcp.toolKillProfile")}</li>
+                    <li>{t("integrations.mcp.toolGetProfileStatus")}</li>
+                    <li>{t("integrations.mcp.toolManageGroups")}</li>
+                    <li>{t("integrations.mcp.toolManageProxies")}</li>
                   </ul>
                 </div>
               </div>

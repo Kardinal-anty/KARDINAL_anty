@@ -140,34 +140,43 @@ export function SettingsDialog({
     }
   }, []);
 
-  const getPermissionDisplayName = useCallback((type: PermissionType) => {
-    switch (type) {
-      case "microphone":
-        return "Microphone";
-      case "camera":
-        return "Camera";
-    }
-  }, []);
+  const getPermissionDisplayName = useCallback(
+    (type: PermissionType) => {
+      switch (type) {
+        case "microphone":
+          return t("settings.permissions.microphone");
+        case "camera":
+          return t("settings.permissions.camera");
+      }
+    },
+    [t],
+  );
 
-  const getStatusBadge = useCallback((isGranted: boolean) => {
-    if (isGranted) {
-      return (
-        <Badge variant="default" className="text-green-800 bg-green-100">
-          Granted
-        </Badge>
-      );
-    }
-    return <Badge variant="secondary">Not Granted</Badge>;
-  }, []);
+  const getStatusBadge = useCallback(
+    (isGranted: boolean) => {
+      if (isGranted) {
+        return (
+          <Badge variant="default" className="text-green-800 bg-green-100">
+            {t("common.status.granted")}
+          </Badge>
+        );
+      }
+      return <Badge variant="secondary">{t("common.status.notGranted")}</Badge>;
+    },
+    [t],
+  );
 
-  const getPermissionDescription = useCallback((type: PermissionType) => {
-    switch (type) {
-      case "microphone":
-        return "Access to microphone for browser applications";
-      case "camera":
-        return "Access to camera for browser applications";
-    }
-  }, []);
+  const getPermissionDescription = useCallback(
+    (type: PermissionType) => {
+      switch (type) {
+        case "microphone":
+          return t("settings.permissions.microphoneDescription");
+        case "camera":
+          return t("settings.permissions.cameraDescription");
+      }
+    },
+    [t],
+  );
 
   const loadSettings = useCallback(async () => {
     setIsLoading(true);
@@ -383,14 +392,7 @@ export function SettingsDialog({
         await changeLanguage(
           selectedLanguage === "system"
             ? null
-            : (selectedLanguage as
-                | "en"
-                | "es"
-                | "pt"
-                | "fr"
-                | "zh"
-                | "ja"
-                | "ru"),
+            : (selectedLanguage as "en" | "ru"),
         );
         setOriginalLanguage(selectedLanguage);
       }
@@ -537,11 +539,13 @@ export function SettingsDialog({
         <div className="grid overflow-y-auto flex-1 gap-6 py-4 min-h-0">
           {/* Appearance Section */}
           <div className="space-y-4">
-            <Label className="text-base font-medium">Appearance</Label>
+            <Label className="text-base font-medium">
+              {t("settings.appearance.title")}
+            </Label>
 
             <div className="grid gap-2">
               <Label htmlFor="theme-select" className="text-sm">
-                Theme
+                {t("settings.appearance.theme")}
               </Label>
               <Select
                 value={settings.theme}
@@ -562,17 +566,24 @@ export function SettingsDialog({
                   <SelectValue placeholder="Select theme" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="light">Light</SelectItem>
-                  <SelectItem value="dark">Dark</SelectItem>
-                  <SelectItem value="system">System</SelectItem>
-                  <SelectItem value="custom">Custom</SelectItem>
+                  <SelectItem value="light">
+                    {t("settings.appearance.light")}
+                  </SelectItem>
+                  <SelectItem value="dark">
+                    {t("settings.appearance.dark")}
+                  </SelectItem>
+                  <SelectItem value="system">
+                    {t("settings.appearance.system")}
+                  </SelectItem>
+                  <SelectItem value="custom">
+                    {t("common.labels.custom")}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <p className="text-xs text-muted-foreground">
-              Choose your preferred theme or follow your system settings. Custom
-              theme changes are applied only when you save.
+              {t("settings.appearance.themeDescription")}
             </p>
 
             {settings.theme === "custom" && (
@@ -582,7 +593,7 @@ export function SettingsDialog({
                     htmlFor="theme-preset-select"
                     className="text-sm font-medium"
                   >
-                    Theme Preset
+                    {t("settings.appearance.themePreset")}
                   </Label>
                   <Select
                     value={customThemeState.selectedThemeId || "custom"}
@@ -612,12 +623,16 @@ export function SettingsDialog({
                           {theme.name}
                         </SelectItem>
                       ))}
-                      <SelectItem value="custom">Your Own</SelectItem>
+                      <SelectItem value="custom">
+                        {t("settings.appearance.yourOwn")}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="text-sm font-medium">Custom Colors</div>
+                <div className="text-sm font-medium">
+                  {t("settings.appearance.customColors")}
+                </div>
                 <div className="grid grid-cols-4 gap-3">
                   {THEME_VARIABLES.map(({ key, label }) => {
                     const colorValue =
@@ -689,11 +704,13 @@ export function SettingsDialog({
 
           {/* Language Section */}
           <div className="space-y-4">
-            <Label className="text-base font-medium">Language</Label>
+            <Label className="text-base font-medium">
+              {t("settings.language.title")}
+            </Label>
 
             <div className="grid gap-2">
               <Label htmlFor="language-select" className="text-sm">
-                Interface Language
+                {t("settings.language.title")}
               </Label>
               <Select
                 value={selectedLanguage || "system"}
@@ -701,10 +718,14 @@ export function SettingsDialog({
                 disabled={isLanguageLoading}
               >
                 <SelectTrigger id="language-select">
-                  <SelectValue placeholder="Select language" />
+                  <SelectValue
+                    placeholder={t("settings.language.selectLanguage")}
+                  />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="system">System Default</SelectItem>
+                  <SelectItem value="system">
+                    {t("settings.language.systemDefault")}
+                  </SelectItem>
                   {supportedLanguages.map((lang) => (
                     <SelectItem key={lang.code} value={lang.code}>
                       {lang.nativeName} ({lang.name})
@@ -715,16 +736,20 @@ export function SettingsDialog({
             </div>
 
             <p className="text-xs text-muted-foreground">
-              Choose your preferred language for the application interface.
+              {t("settings.language.description")}
             </p>
           </div>
 
           {/* Default Browser Section */}
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <Label className="text-base font-medium">Default Browser</Label>
+              <Label className="text-base font-medium">
+                {t("settings.defaultBrowser.title")}
+              </Label>
               <Badge variant={isDefaultBrowser ? "default" : "secondary"}>
-                {isDefaultBrowser ? "Active" : "Inactive"}
+                {isDefaultBrowser
+                  ? t("common.status.active")
+                  : t("common.status.inactive")}
               </Badge>
             </div>
 
@@ -738,13 +763,12 @@ export function SettingsDialog({
               className="w-full"
             >
               {isDefaultBrowser
-                ? "Already Default Browser"
-                : "Set as Default Browser"}
+                ? t("settings.defaultBrowser.alreadyDefault")
+                : t("settings.defaultBrowser.setAsDefault")}
             </LoadingButton>
 
             <p className="text-xs text-muted-foreground">
-              When set as default, KARDINAL Anty will handle web links and allow
-              you to choose which profile to use.
+              {t("settings.defaultBrowser.description")}
             </p>
           </div>
 
@@ -752,12 +776,12 @@ export function SettingsDialog({
           {isMacOS && (
             <div className="space-y-4">
               <Label className="text-base font-medium">
-                System Permissions
+                {t("settings.permissions.title")}
               </Label>
 
               {isLoadingPermissions ? (
                 <div className="text-sm text-muted-foreground">
-                  Loading permissions...
+                  {t("settings.permissions.loading")}
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -794,7 +818,7 @@ export function SettingsDialog({
                               ).catch(console.error);
                             }}
                           >
-                            Grant
+                            {t("common.buttons.grant")}
                           </LoadingButton>
                         )}
                       </div>
@@ -804,52 +828,54 @@ export function SettingsDialog({
               )}
 
               <p className="text-xs text-muted-foreground">
-                These permissions allow browsers launched from KARDINAL Anty to
-                access system resources. Each website will still ask for your
-                permission individually.
+                {t("settings.permissions.description")}
               </p>
             </div>
           )}
 
           {/* Integrations Section */}
           <div className="space-y-4">
-            <Label className="text-base font-medium">Integrations</Label>
+            <Label className="text-base font-medium">
+              {t("settings.integrations.title")}
+            </Label>
             <p className="text-xs text-muted-foreground">
-              Configure Local API and MCP (Model Context Protocol) for
-              integrating with external tools and AI assistants.
+              {t("settings.integrations.description")}
             </p>
             <RippleButton
               variant="outline"
               className="w-full"
               onClick={onIntegrationsOpen}
             >
-              Open Integrations Settings
+              {t("settings.integrations.openSettings")}
             </RippleButton>
           </div>
 
           {/* Commercial License Section */}
           <div className="space-y-4">
-            <Label className="text-base font-medium">Commercial License</Label>
+            <Label className="text-base font-medium">
+              {t("settings.commercial.title")}
+            </Label>
 
             <div className="flex items-center justify-between p-3 rounded-md border bg-muted/40">
               {trialStatus?.type === "Active" ? (
                 <div className="space-y-1">
                   <p className="text-sm font-medium">
-                    Trial: {trialStatus.days_remaining} days,{" "}
-                    {trialStatus.hours_remaining} hours remaining
+                    {t("settings.commercial.trialActive", {
+                      days: trialStatus.days_remaining,
+                      hours: trialStatus.hours_remaining,
+                    })}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    Commercial use is free during the trial period
+                    {t("settings.commercial.trialActiveDescription")}
                   </p>
                 </div>
               ) : (
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-orange-600">
-                    Trial expired
+                    {t("settings.commercial.trialExpired")}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    Personal use remains free. Commercial use requires a
-                    license.
+                    {t("settings.commercial.trialExpiredDescription")}
                   </p>
                 </div>
               )}
@@ -858,7 +884,9 @@ export function SettingsDialog({
 
           {/* Advanced Section */}
           <div className="space-y-4">
-            <Label className="text-base font-medium">Advanced</Label>
+            <Label className="text-base font-medium">
+              {t("settings.advanced.title")}
+            </Label>
 
             <LoadingButton
               isLoading={isClearingCache}
@@ -868,20 +896,18 @@ export function SettingsDialog({
               variant="outline"
               className="w-full"
             >
-              Clear All Version Cache
+              {t("settings.advanced.clearCache")}
             </LoadingButton>
 
             <p className="text-xs text-muted-foreground">
-              Clear all cached browser version data and refresh all browser
-              versions from their sources. This will force a fresh download of
-              version information for all browsers.
+              {t("settings.advanced.clearCacheDescription")}
             </p>
           </div>
         </div>
 
         <DialogFooter className="shrink-0">
           <RippleButton variant="outline" onClick={handleClose}>
-            Cancel
+            {t("common.buttons.cancel")}
           </RippleButton>
           <LoadingButton
             isLoading={isSaving}
@@ -890,7 +916,7 @@ export function SettingsDialog({
             }}
             disabled={isLoading || !hasChanges}
           >
-            Save Settings
+            {t("common.buttons.saveSettings")}
           </LoadingButton>
         </DialogFooter>
       </DialogContent>

@@ -148,14 +148,14 @@ export function WayfernConfigForm({
     <div className="space-y-6">
       {/* Operating System Selection */}
       <div className="space-y-3">
-        <Label>Operating System Fingerprint</Label>
+        <Label>{t("fingerprint.os.title")}</Label>
         <Select
           value={selectedOS}
           onValueChange={(value: WayfernOS) => onConfigChange("os", value)}
           disabled={readOnly}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Select operating system" />
+            <SelectValue placeholder={t("fingerprint.os.selectPlaceholder")} />
           </SelectTrigger>
           <SelectContent>
             {(
@@ -196,12 +196,11 @@ export function WayfernConfigForm({
             disabled={readOnly}
           />
           <Label htmlFor="randomize-fingerprint" className="font-medium">
-            Generate random fingerprint on every launch
+            {t("fingerprint.randomize.label")}
           </Label>
         </div>
         <p className="text-sm text-muted-foreground ml-6">
-          When enabled, a new fingerprint will be generated each time the
-          browser is launched.
+          {t("fingerprint.randomize.description")}
         </p>
       </div>
 
@@ -209,14 +208,14 @@ export function WayfernConfigForm({
         <Alert>
           <AlertDescription>
             {readOnly
-              ? "Fingerprint editing is disabled because the profile is currently running."
-              : "Fingerprint editing is disabled because random fingerprint generation is enabled."}
+              ? t("fingerprint.alerts.readOnlyDisabledShort")
+              : t("fingerprint.alerts.randomizeDisabledShort")}
           </AlertDescription>
         </Alert>
       ) : (
         <Alert>
           <AlertDescription>
-            Warning: Only edit these parameters if you know what you're doing.
+            {t("fingerprint.alerts.editWarningShort")}
           </AlertDescription>
         </Alert>
       )}
@@ -224,10 +223,12 @@ export function WayfernConfigForm({
       <fieldset disabled={isEditingDisabled} className="space-y-6">
         {/* User Agent and Platform */}
         <div className="space-y-3">
-          <Label>User Agent & Platform</Label>
+          <Label>{t("fingerprint.userAgentPlatform.title")}</Label>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2 col-span-2">
-              <Label htmlFor="user-agent">User Agent</Label>
+              <Label htmlFor="user-agent">
+                {t("fingerprint.navigator.userAgent")}
+              </Label>
               <Input
                 id="user-agent"
                 value={fingerprintConfig.userAgent || ""}
@@ -241,7 +242,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="platform">Platform</Label>
+              <Label htmlFor="platform">
+                {t("fingerprint.navigator.platform")}
+              </Label>
               <Input
                 id="platform"
                 value={fingerprintConfig.platform || ""}
@@ -255,7 +258,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="platform-version">Platform Version</Label>
+              <Label htmlFor="platform-version">
+                {t("fingerprint.userAgentPlatform.platformVersion")}
+              </Label>
               <Input
                 id="platform-version"
                 value={fingerprintConfig.platformVersion || ""}
@@ -269,7 +274,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="brand">Brand</Label>
+              <Label htmlFor="brand">
+                {t("fingerprint.userAgentPlatform.brand")}
+              </Label>
               <Input
                 id="brand"
                 value={fingerprintConfig.brand || ""}
@@ -280,7 +287,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="brand-version">Brand Version</Label>
+              <Label htmlFor="brand-version">
+                {t("fingerprint.userAgentPlatform.brandVersion")}
+              </Label>
               <Input
                 id="brand-version"
                 value={fingerprintConfig.brandVersion || ""}
@@ -298,10 +307,12 @@ export function WayfernConfigForm({
 
         {/* Hardware Properties */}
         <div className="space-y-3">
-          <Label>Hardware Properties</Label>
+          <Label>{t("fingerprint.hardware.title")}</Label>
           <div className="grid grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="hardware-concurrency">Hardware Concurrency</Label>
+              <Label htmlFor="hardware-concurrency">
+                {t("fingerprint.navigator.hardwareConcurrency")}
+              </Label>
               <Input
                 id="hardware-concurrency"
                 type="number"
@@ -316,7 +327,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="max-touch-points">Max Touch Points</Label>
+              <Label htmlFor="max-touch-points">
+                {t("fingerprint.navigator.maxTouchPoints")}
+              </Label>
               <Input
                 id="max-touch-points"
                 type="number"
@@ -331,7 +344,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="device-memory">Device Memory (GB)</Label>
+              <Label htmlFor="device-memory">
+                {t("fingerprint.hardware.deviceMemory")}
+              </Label>
               <Input
                 id="device-memory"
                 type="number"
@@ -350,10 +365,12 @@ export function WayfernConfigForm({
 
         {/* Screen Properties */}
         <div className="space-y-3">
-          <Label>Screen Properties</Label>
+          <Label>{t("fingerprint.screen.title")}</Label>
           <div className="grid grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="screen-width">Screen Width</Label>
+              <Label htmlFor="screen-width">
+                {t("fingerprint.screen.width")}
+              </Label>
               <Input
                 id="screen-width"
                 type="number"
@@ -368,7 +385,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="screen-height">Screen Height</Label>
+              <Label htmlFor="screen-height">
+                {t("fingerprint.screen.height")}
+              </Label>
               <Input
                 id="screen-height"
                 type="number"
@@ -383,7 +402,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="device-pixel-ratio">Device Pixel Ratio</Label>
+              <Label htmlFor="device-pixel-ratio">
+                {t("fingerprint.hardware.devicePixelRatio")}
+              </Label>
               <Input
                 id="device-pixel-ratio"
                 type="number"
@@ -399,7 +420,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="screen-avail-width">Available Width</Label>
+              <Label htmlFor="screen-avail-width">
+                {t("fingerprint.screen.availWidth")}
+              </Label>
               <Input
                 id="screen-avail-width"
                 type="number"
@@ -414,7 +437,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="screen-avail-height">Available Height</Label>
+              <Label htmlFor="screen-avail-height">
+                {t("fingerprint.screen.availHeight")}
+              </Label>
               <Input
                 id="screen-avail-height"
                 type="number"
@@ -429,7 +454,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="screen-color-depth">Color Depth</Label>
+              <Label htmlFor="screen-color-depth">
+                {t("fingerprint.screen.colorDepth")}
+              </Label>
               <Input
                 id="screen-color-depth"
                 type="number"
@@ -448,10 +475,12 @@ export function WayfernConfigForm({
 
         {/* Window Properties */}
         <div className="space-y-3">
-          <Label>Window Properties</Label>
+          <Label>{t("fingerprint.window.title")}</Label>
           <div className="grid grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="window-outer-width">Outer Width</Label>
+              <Label htmlFor="window-outer-width">
+                {t("fingerprint.window.outerWidth")}
+              </Label>
               <Input
                 id="window-outer-width"
                 type="number"
@@ -466,7 +495,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="window-outer-height">Outer Height</Label>
+              <Label htmlFor="window-outer-height">
+                {t("fingerprint.window.outerHeight")}
+              </Label>
               <Input
                 id="window-outer-height"
                 type="number"
@@ -481,7 +512,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="window-inner-width">Inner Width</Label>
+              <Label htmlFor="window-inner-width">
+                {t("fingerprint.window.innerWidth")}
+              </Label>
               <Input
                 id="window-inner-width"
                 type="number"
@@ -496,7 +529,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="window-inner-height">Inner Height</Label>
+              <Label htmlFor="window-inner-height">
+                {t("fingerprint.window.innerHeight")}
+              </Label>
               <Input
                 id="window-inner-height"
                 type="number"
@@ -511,7 +546,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="screen-x">Screen X</Label>
+              <Label htmlFor="screen-x">
+                {t("fingerprint.window.screenX")}
+              </Label>
               <Input
                 id="screen-x"
                 type="number"
@@ -526,7 +563,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="screen-y">Screen Y</Label>
+              <Label htmlFor="screen-y">
+                {t("fingerprint.window.screenY")}
+              </Label>
               <Input
                 id="screen-y"
                 type="number"
@@ -545,11 +584,11 @@ export function WayfernConfigForm({
 
         {/* Language & Locale */}
         <div className="space-y-3">
-          <Label>Language & Locale</Label>
+          <Label>{t("fingerprint.languageLocale.title")}</Label>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="language">
-                Primary Language (navigator.language)
+                {t("fingerprint.languageLocale.primaryLanguage")}
               </Label>
               <Input
                 id="language"
@@ -564,7 +603,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="languages">Languages (JSON array)</Label>
+              <Label htmlFor="languages">
+                {t("fingerprint.languageLocale.languages")}
+              </Label>
               <Input
                 id="languages"
                 value={
@@ -590,7 +631,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="do-not-track">Do Not Track</Label>
+              <Label htmlFor="do-not-track">
+                {t("fingerprint.navigator.doNotTrack")}
+              </Label>
               <Select
                 value={fingerprintConfig.doNotTrack || ""}
                 onValueChange={(value) =>
@@ -598,12 +641,20 @@ export function WayfernConfigForm({
                 }
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select DNT value" />
+                  <SelectValue
+                    placeholder={t("fingerprint.navigator.selectDnt")}
+                  />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="0">0 (tracking allowed)</SelectItem>
-                  <SelectItem value="1">1 (tracking not allowed)</SelectItem>
-                  <SelectItem value="unspecified">unspecified</SelectItem>
+                  <SelectItem value="0">
+                    {t("fingerprint.navigator.dntAllowed")}
+                  </SelectItem>
+                  <SelectItem value="1">
+                    {t("fingerprint.navigator.dntNotAllowed")}
+                  </SelectItem>
+                  <SelectItem value="unspecified">
+                    {t("fingerprint.navigator.dntUnspecified")}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -612,13 +663,15 @@ export function WayfernConfigForm({
 
         {/* Timezone and Geolocation */}
         <div className="space-y-3">
-          <Label>Timezone & Geolocation</Label>
+          <Label>{t("fingerprint.timezoneGeolocation.title")}</Label>
           <p className="text-sm text-muted-foreground">
-            These values override the browser's timezone and geolocation APIs.
+            {t("fingerprint.timezoneGeolocation.description")}
           </p>
           <div className="grid grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="timezone">Timezone (IANA)</Label>
+              <Label htmlFor="timezone">
+                {t("fingerprint.timezone.timezoneIana")}
+              </Label>
               <Input
                 id="timezone"
                 value={fingerprintConfig.timezone || ""}
@@ -632,7 +685,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="timezone-offset">Offset (minutes from UTC)</Label>
+              <Label htmlFor="timezone-offset">
+                {t("fingerprint.timezone.offset")}
+              </Label>
               <Input
                 id="timezone-offset"
                 type="number"
@@ -647,7 +702,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="latitude">Latitude</Label>
+              <Label htmlFor="latitude">
+                {t("fingerprint.geolocation.latitude")}
+              </Label>
               <Input
                 id="latitude"
                 type="number"
@@ -663,7 +720,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="longitude">Longitude</Label>
+              <Label htmlFor="longitude">
+                {t("fingerprint.geolocation.longitude")}
+              </Label>
               <Input
                 id="longitude"
                 type="number"
@@ -679,7 +738,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="accuracy">Accuracy (meters)</Label>
+              <Label htmlFor="accuracy">
+                {t("fingerprint.geolocation.accuracy")}
+              </Label>
               <Input
                 id="accuracy"
                 type="number"
@@ -698,10 +759,12 @@ export function WayfernConfigForm({
 
         {/* WebGL Properties */}
         <div className="space-y-3">
-          <Label>WebGL Properties</Label>
+          <Label>{t("fingerprint.webgl.title")}</Label>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="webgl-vendor">WebGL Vendor</Label>
+              <Label htmlFor="webgl-vendor">
+                {t("fingerprint.webgl.vendor")}
+              </Label>
               <Input
                 id="webgl-vendor"
                 value={fingerprintConfig.webglVendor || ""}
@@ -715,7 +778,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="webgl-renderer">WebGL Renderer</Label>
+              <Label htmlFor="webgl-renderer">
+                {t("fingerprint.webgl.renderer")}
+              </Label>
               <Input
                 id="webgl-renderer"
                 value={fingerprintConfig.webglRenderer || ""}
@@ -733,7 +798,7 @@ export function WayfernConfigForm({
 
         {/* WebGL Parameters (JSON) */}
         <div className="space-y-3">
-          <Label>WebGL Parameters (JSON)</Label>
+          <Label>{t("fingerprint.webgl.parametersJson")}</Label>
           <Textarea
             value={fingerprintConfig.webglParameters || ""}
             onChange={(e) =>
@@ -750,9 +815,11 @@ export function WayfernConfigForm({
 
         {/* Canvas Noise Seed */}
         <div className="space-y-3">
-          <Label>Canvas Fingerprint</Label>
+          <Label>{t("fingerprint.canvas.title")}</Label>
           <div className="space-y-2">
-            <Label htmlFor="canvas-noise-seed">Canvas Noise Seed</Label>
+            <Label htmlFor="canvas-noise-seed">
+              {t("fingerprint.canvas.noiseSeed")}
+            </Label>
             <Input
               id="canvas-noise-seed"
               value={fingerprintConfig.canvasNoiseSeed || ""}
@@ -765,15 +832,14 @@ export function WayfernConfigForm({
               placeholder="Enter a seed string for canvas fingerprint"
             />
             <p className="text-sm text-muted-foreground">
-              This seed is used to generate a consistent but unique canvas
-              fingerprint. Each profile should have a different seed.
+              {t("fingerprint.canvas.noiseSeedDescription")}
             </p>
           </div>
         </div>
 
         {/* Fonts (JSON) */}
         <div className="space-y-3">
-          <Label>Fonts (JSON array)</Label>
+          <Label>{t("fingerprint.fonts.titleJsonArray")}</Label>
           <Textarea
             value={fingerprintConfig.fonts || ""}
             onChange={(e) =>
@@ -787,10 +853,12 @@ export function WayfernConfigForm({
 
         {/* Audio */}
         <div className="space-y-3">
-          <Label>Audio Properties</Label>
+          <Label>{t("fingerprint.audio.title")}</Label>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="audio-sample-rate">Sample Rate</Label>
+              <Label htmlFor="audio-sample-rate">
+                {t("fingerprint.audio.sampleRate")}
+              </Label>
               <Input
                 id="audio-sample-rate"
                 type="number"
@@ -805,7 +873,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="audio-max-channel-count">Max Channel Count</Label>
+              <Label htmlFor="audio-max-channel-count">
+                {t("fingerprint.audio.maxChannelCount")}
+              </Label>
               <Input
                 id="audio-max-channel-count"
                 type="number"
@@ -824,7 +894,7 @@ export function WayfernConfigForm({
 
         {/* Battery */}
         <div className="space-y-3">
-          <Label>Battery</Label>
+          <Label>{t("fingerprint.battery.title")}</Label>
           <div className="grid grid-cols-3 gap-4">
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
@@ -838,11 +908,15 @@ export function WayfernConfigForm({
                     )
                   }
                 />
-                <Label htmlFor="battery-charging">Charging</Label>
+                <Label htmlFor="battery-charging">
+                  {t("fingerprint.battery.charging")}
+                </Label>
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="battery-level">Level (0-1)</Label>
+              <Label htmlFor="battery-level">
+                {t("fingerprint.battery.level")}
+              </Label>
               <Input
                 id="battery-level"
                 type="number"
@@ -864,10 +938,12 @@ export function WayfernConfigForm({
 
         {/* Vendor Info */}
         <div className="space-y-3">
-          <Label>Vendor Info</Label>
+          <Label>{t("fingerprint.vendorInfo.title")}</Label>
           <div className="grid grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="vendor">Vendor</Label>
+              <Label htmlFor="vendor">
+                {t("fingerprint.vendorInfo.vendor")}
+              </Label>
               <Input
                 id="vendor"
                 value={fingerprintConfig.vendor || ""}
@@ -878,7 +954,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="vendor-sub">Vendor Sub</Label>
+              <Label htmlFor="vendor-sub">
+                {t("fingerprint.vendorInfo.vendorSub")}
+              </Label>
               <Input
                 id="vendor-sub"
                 value={fingerprintConfig.vendorSub || ""}
@@ -892,7 +970,9 @@ export function WayfernConfigForm({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="product-sub">Product Sub</Label>
+              <Label htmlFor="product-sub">
+                {t("fingerprint.vendorInfo.productSub")}
+              </Label>
               <Input
                 id="product-sub"
                 value={fingerprintConfig.productSub || ""}
@@ -923,17 +1003,17 @@ export function WayfernConfigForm({
         >
           <TabsList className="grid grid-cols-2 w-full">
             <TabsTrigger value="automatic" disabled={readOnly}>
-              Automatic
+              {t("fingerprint.tabs.automatic")}
             </TabsTrigger>
             <TabsTrigger value="manual" disabled={readOnly}>
-              Manual
+              {t("fingerprint.tabs.manual")}
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="automatic" className="space-y-6">
             {/* Operating System Selection */}
             <div className="mt-4 space-y-3">
-              <Label>Operating System Fingerprint</Label>
+              <Label>{t("fingerprint.os.title")}</Label>
               <Select
                 value={selectedOS}
                 onValueChange={(value: WayfernOS) =>
@@ -942,7 +1022,9 @@ export function WayfernConfigForm({
                 disabled={readOnly}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select operating system" />
+                  <SelectValue
+                    placeholder={t("fingerprint.os.selectPlaceholder")}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {(
@@ -971,9 +1053,7 @@ export function WayfernConfigForm({
               {selectedOS !== currentOS && crossOsUnlocked && (
                 <Alert className="mt-2">
                   <AlertDescription>
-                    Cross-OS fingerprinting has limitations. System-level APIs
-                    may still reflect your actual operating system, and some
-                    features may have degraded performance.
+                    {t("fingerprint.crossOsLimitations")}
                   </AlertDescription>
                 </Alert>
               )}
@@ -994,12 +1074,11 @@ export function WayfernConfigForm({
                   htmlFor="randomize-fingerprint-auto"
                   className="font-medium"
                 >
-                  Generate random fingerprint on every launch
+                  {t("fingerprint.randomize.label")}
                 </Label>
               </div>
               <p className="text-sm text-muted-foreground ml-6">
-                When enabled, a new fingerprint will be generated each time the
-                browser is launched.
+                {t("fingerprint.randomize.description")}
               </p>
             </div>
 
@@ -1013,17 +1092,19 @@ export function WayfernConfigForm({
                   disabled={isEditingDisabled}
                 />
                 <Label htmlFor="auto-location">
-                  Automatically configure location based on proxy or connection
+                  {t("fingerprint.autoLocationShort")}
                 </Label>
               </div>
             </div>
 
             {/* Screen Resolution */}
             <fieldset disabled={isEditingDisabled} className="space-y-3">
-              <Label>Screen Resolution</Label>
+              <Label>{t("fingerprint.screen.resolution")}</Label>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="screen-max-width">Max Width</Label>
+                  <Label htmlFor="screen-max-width">
+                    {t("fingerprint.screen.maxWidth")}
+                  </Label>
                   <Input
                     id="screen-max-width"
                     type="number"
@@ -1040,7 +1121,9 @@ export function WayfernConfigForm({
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="screen-max-height">Max Height</Label>
+                  <Label htmlFor="screen-max-height">
+                    {t("fingerprint.screen.maxHeight")}
+                  </Label>
                   <Input
                     id="screen-max-height"
                     type="number"
@@ -1057,7 +1140,9 @@ export function WayfernConfigForm({
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="screen-min-width">Min Width</Label>
+                  <Label htmlFor="screen-min-width">
+                    {t("fingerprint.screen.minWidth")}
+                  </Label>
                   <Input
                     id="screen-min-width"
                     type="number"
@@ -1074,7 +1159,9 @@ export function WayfernConfigForm({
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="screen-min-height">Min Height</Label>
+                  <Label htmlFor="screen-min-height">
+                    {t("fingerprint.screen.minHeight")}
+                  </Label>
                   <Input
                     id="screen-min-height"
                     type="number"

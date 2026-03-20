@@ -50,6 +50,7 @@
       "type": "Type",
       "status": "Status",
       "actions": "Actions",
+      "sync": "Sync",
       "description": "Description",
       "none": "None",
       "default": "Default",
@@ -204,25 +205,57 @@
   "proxies": {
     "title": "Proxies",
     "management": "Proxy Management",
+    "managementDescription": "Manage your saved proxy configurations for reuse across profiles",
     "add": "Add Proxy",
     "edit": "Edit Proxy",
+    "editProxy": "Edit proxy",
     "delete": "Delete Proxy",
+    "deleteProxy": "Delete proxy",
+    "deleteConfirmDescription": "This action cannot be undone. This will permanently delete the proxy \"{{name}}\".",
+    "deletedSuccess": "Proxy deleted successfully",
+    "deleteFailed": "Failed to delete proxy",
+    "cannotDeleteInUse": "Cannot delete: in use by {{count}} profile",
+    "cannotDeleteInUse_plural": "Cannot delete: in use by {{count}} profiles",
     "import": "Import",
     "export": "Export",
+    "create": "Create",
     "noProxies": "No proxies configured",
     "noProxiesDescription": "Add a proxy to route browser traffic through it.",
+    "noProxiesCreated": "No proxies created yet. Create your first proxy using the button above.",
+    "loadingProxies": "Loading proxies...",
+    "usage": "Usage",
+    "recommendedProxies": "Recommended Proxies",
+    "recommendedProxiesTooltip": "Get 3GB of traffic from SX.ORG with promo KRD3",
     "form": {
       "name": "Name",
       "namePlaceholder": "Enter proxy name",
+      "nameLabel": "Proxy Name",
+      "nameExample": "e.g. Office Proxy, Home VPN, etc.",
       "type": "Type",
+      "typeLabel": "Proxy Type",
+      "typePlaceholder": "Select proxy type",
       "host": "Host",
       "hostPlaceholder": "proxy.example.com",
+      "hostExample": "e.g. 127.0.0.1",
       "port": "Port",
       "portPlaceholder": "8080",
+      "portExample": "e.g. 8080",
       "username": "Username",
+      "usernameOptional": "Username (optional)",
       "usernamePlaceholder": "Optional",
+      "usernameProxyPlaceholder": "Proxy username",
       "password": "Password",
-      "passwordPlaceholder": "Optional"
+      "passwordOptional": "Password (optional)",
+      "passwordPlaceholder": "Optional",
+      "passwordProxyPlaceholder": "Proxy password",
+      "nameRequired": "Proxy name is required",
+      "hostPortRequired": "Host and port are required",
+      "updatedSuccess": "Proxy updated successfully",
+      "createdSuccess": "Proxy created successfully",
+      "saveFailed": "Failed to save proxy: {{error}}",
+      "createNew": "Create New Proxy",
+      "updateProxy": "Update Proxy",
+      "createProxy": "Create Proxy"
     },
     "types": {
       "http": "HTTP",
@@ -234,21 +267,108 @@
       "checking": "Checking proxy...",
       "valid": "Proxy is valid",
       "invalid": "Proxy is invalid",
-      "lastChecked": "Last checked: {{time}}"
+      "lastChecked": "Last checked: {{time}}",
+      "locationIs": "Your proxy location is:",
+      "unknown": "Unknown",
+      "failedError": "Proxy check failed: {{error}}",
+      "ip": "IP: {{ip}}",
+      "checked": "Checked {{time}}",
+      "checkFailed": "Proxy check failed",
+      "failedTime": "Failed {{time}}",
+      "checkValidity": "Check proxy validity"
     },
     "sync": {
       "enabled": "Sync Enabled",
-      "disabled": "Sync Disabled"
+      "disabled": "Sync Disabled",
+      "syncing": "Syncing...",
+      "synced": "Synced",
+      "syncedAt": "Synced {{time}}",
+      "waitingToSync": "Waiting to sync",
+      "syncError": "Sync error",
+      "notSynced": "Not synced",
+      "enableSync": "Enable sync",
+      "disableSync": "Disable sync",
+      "syncEnabledToast": "Sync enabled",
+      "syncDisabledToast": "Sync disabled",
+      "syncToggleFailed": "Failed to update sync",
+      "cannotDisableInUse": "Sync cannot be disabled while this proxy is used by synced profiles"
     }
+  },
+  "proxyImport": {
+    "title": "Import Proxies",
+    "titleVpn": "Import VPN Config",
+    "descriptionDropzone": "Import proxies from a JSON or TXT file, or VPN configs (.conf/.ovpn)",
+    "descriptionPreview": "Review the proxies to import",
+    "descriptionAmbiguous": "Some proxies have ambiguous formats. Please select the correct format.",
+    "descriptionResult": "Import completed",
+    "descriptionVpnPreview": "Review the VPN configuration to import",
+    "descriptionVpnResult": "VPN import completed",
+    "dropFile": "Drop a proxy or VPN config file",
+    "fileTypes": "(.json, .txt, .conf, .ovpn)",
+    "pasteClipboard": "Paste from clipboard with {{modKey}}+V",
+    "namePrefix": "Name Prefix",
+    "namePrefixDefault": "Imported",
+    "namingPattern": "Proxies will be named \"{{prefix}} Proxy 1\", \"{{prefix}} Proxy 2\", etc.",
+    "proxiesToImport": "Proxies to import ({{count}})",
+    "invalidCount": "({{count}} invalid)",
+    "ambiguousDescription": "The following proxies have an ambiguous format. Please select the correct interpretation for each.",
+    "imported": "Imported:",
+    "skippedDuplicates": "Skipped (duplicates):",
+    "errors": "Errors:",
+    "errorsLabel": "Errors",
+    "vpnConfiguration": "{{type}} Configuration",
+    "vpnEndpoint": "Endpoint: {{endpoint}}",
+    "vpnName": "VPN Name",
+    "vpnNamePlaceholder": "My VPN",
+    "configPreview": "Config Preview",
+    "vpnImportedSuccess": "VPN Imported Successfully",
+    "importFailed": "Import Failed",
+    "cancel": "Cancel",
+    "back": "Back",
+    "importCount": "Import {{count}} Proxies",
+    "continue": "Continue",
+    "done": "Done",
+    "importVpn": "Import VPN",
+    "noValidProxies": "No valid proxies found in the file",
+    "failedProcessFile": "Failed to process file",
+    "failedReadFile": "Failed to read file",
+    "invalidFileType": "Please drop a .json, .txt, .conf, or .ovpn file",
+    "failedImportProxies": "Failed to import proxies",
+    "failedImportVpn": "Failed to import VPN config"
+  },
+  "proxyExport": {
+    "title": "Export Proxies",
+    "description": "Export your proxy configurations to a file",
+    "exportFormat": "Export Format",
+    "txtFormat": "TXT (URL format)",
+    "preview": "Preview",
+    "loading": "Loading...",
+    "noProxies": "No proxies to export",
+    "close": "Close",
+    "copied": "Copied",
+    "copy": "Copy",
+    "download": "Download",
+    "copiedToClipboard": "Copied to clipboard",
+    "failedExport": "Failed to export proxies",
+    "failedCopy": "Failed to copy to clipboard",
+    "downloaded": "Downloaded {{filename}}"
   },
   "groups": {
     "title": "Groups",
     "management": "Group Management",
+    "manageTitle": "Manage Profile Groups",
+    "managementDescription": "Create, edit, and delete profile groups. Profiles without a group will appear in the \"Default\" group.",
     "add": "Add Group",
     "edit": "Edit Group",
     "delete": "Delete Group",
     "noGroups": "No groups created",
     "noGroupsDescription": "Create a group to organize your profiles.",
+    "noGroupsCreated": "No groups created yet. Create your first group using the button above.",
+    "loadingGroups": "Loading groups...",
+    "create": "Create",
+    "editGroup": "Edit group",
+    "deleteGroup": "Delete group",
+    "groupLoadFailed": "Failed to load groups",
     "form": {
       "name": "Name",
       "namePlaceholder": "Enter group name"
@@ -258,7 +378,19 @@
     "assignProfiles": "Assign Profiles",
     "sync": {
       "enabled": "Sync Enabled",
-      "disabled": "Sync Disabled"
+      "disabled": "Sync Disabled",
+      "syncing": "Syncing...",
+      "synced": "Synced",
+      "syncedAt": "Synced {{time}}",
+      "waitingToSync": "Waiting to sync",
+      "syncError": "Sync error",
+      "notSynced": "Not synced",
+      "enableSync": "Enable sync",
+      "disableSync": "Disable sync",
+      "syncEnabledToast": "Sync enabled",
+      "syncDisabledToast": "Sync disabled",
+      "syncToggleFailed": "Failed to update sync",
+      "cannotDisableInUse": "Sync cannot be disabled while this group is used by synced profiles"
     }
   },
   "sync": {
@@ -295,6 +427,21 @@
       "logoutConfirm": "Are you sure you want to log out? Cloud sync will stop.",
       "loginSuccess": "Successfully logged in!",
       "logoutSuccess": "Successfully logged out."
+    },
+    "selfHosted": {
+      "enterServerUrl": "Please enter a server URL",
+      "connectionSuccessful": "Connection successful!",
+      "serverError": "Server responded with an error",
+      "connectionFailed": "Failed to connect to server",
+      "settingsSaved": "Sync settings saved",
+      "saveFailed": "Failed to save settings",
+      "disconnected": "Sync disconnected",
+      "disconnectFailed": "Failed to disconnect",
+      "disconnect": "Disconnect",
+      "testing": "Testing...",
+      "testConnection": "Test Connection",
+      "hideToken": "Hide token",
+      "showToken": "Show token"
     }
   },
   "integrations": {
@@ -307,17 +454,43 @@
       "port": "Port",
       "token": "API Token",
       "copyToken": "Copy Token",
-      "regenerateToken": "Regenerate Token"
+      "regenerateToken": "Regenerate Token",
+      "enableLabel": "Enable Local API Server",
+      "enableDescription": "Allow managing profiles, groups, and proxies via REST API.",
+      "serverRunning": "Server is running",
+      "authToken": "Authentication Token",
+      "tokenCopied": "Token copied",
+      "authHint": "Include in Authorization header: Bearer <token>",
+      "startedOnPort": "API server started on port {{port}}",
+      "stopped": "API server stopped",
+      "toggleFailed": "Failed to toggle API server"
     },
     "mcp": {
       "title": "MCP Server",
+      "tabLabel": "MCP (AI Assistants)",
       "description": "Enable the MCP (Model Context Protocol) server for AI assistant integrations.",
       "enabled": "MCP Enabled",
       "disabled": "MCP Disabled",
       "port": "Port",
       "token": "MCP Token",
       "config": "MCP Configuration",
-      "copyConfig": "Copy Configuration"
+      "copyConfig": "Copy Configuration",
+      "enableLabel": "Enable MCP Server (Model Context Protocol)",
+      "enableDescription": "Allow AI assistants like Claude Desktop to control browsers.",
+      "acceptTermsFirst": "(Accept Wayfern terms in Settings first)",
+      "claudeDesktopConfig": "Claude Desktop Configuration",
+      "configInstructions": "Copy this configuration to your Claude Desktop config file at",
+      "configCopied": "Configuration copied",
+      "availableTools": "Available Tools",
+      "toolListProfiles": "list_profiles - List browser profiles",
+      "toolRunProfile": "run_profile - Launch a browser",
+      "toolKillProfile": "kill_profile - Stop a running browser",
+      "toolGetProfileStatus": "get_profile_status - Check if browser is running",
+      "toolManageGroups": "list_groups, create_group, etc. - Manage groups",
+      "toolManageProxies": "list_proxies, create_proxy, etc. - Manage proxies",
+      "startedOnPort": "MCP server started on port {{port}}",
+      "stopped": "MCP server stopped",
+      "toggleFailed": "Failed to toggle MCP server"
     }
   },
   "import": {
@@ -480,6 +653,255 @@
     "wayfern": "Wayfern"
   },
   "fingerprint": {
-    "crossOsWarning": "Spoofing a different operating system is harder — system-level APIs are more difficult to mask, making it easier for websites to detect inconsistencies. No anti-detect browser can perfectly spoof every detail across operating systems."
+    "crossOsWarning": "Spoofing a different operating system is harder — system-level APIs are more difficult to mask, making it easier for websites to detect inconsistencies. No anti-detect browser can perfectly spoof every detail across operating systems.",
+    "crossOsLimitations": "Cross-OS fingerprinting has limitations. System-level APIs may still reflect your actual operating system, and some features may have degraded performance.",
+    "enterAsJson": "Enter {{title}} as JSON",
+    "os": {
+      "title": "Operating System Fingerprint",
+      "selectPlaceholder": "Select operating system"
+    },
+    "randomize": {
+      "label": "Generate random fingerprint on every launch",
+      "description": "When enabled, a new fingerprint will be generated each time the browser is launched.",
+      "descriptionWithSave": "When enabled, a new fingerprint will be generated each time the browser is launched. The generated fingerprint is saved for reference."
+    },
+    "alerts": {
+      "readOnlyDisabled": "Fingerprint editing is disabled because the profile is currently running. Stop the profile to make changes.",
+      "readOnlyDisabledShort": "Fingerprint editing is disabled because the profile is currently running.",
+      "randomizeDisabled": "Fingerprint editing is disabled because random fingerprint generation is enabled. Disable the option above to manually edit the fingerprint configuration.",
+      "randomizeDisabledShort": "Fingerprint editing is disabled because random fingerprint generation is enabled.",
+      "editWarning": "⚠️ Warning: Only edit these parameters if you know what you're doing. Incorrect values may break websites, make them detect you, and lead to hard-to-debug bugs.",
+      "editWarningShort": "Warning: Only edit these parameters if you know what you're doing."
+    },
+    "tabs": {
+      "automatic": "Automatic",
+      "manual": "Manual"
+    },
+    "blocking": {
+      "title": "Blocking Options",
+      "blockImages": "Block Images",
+      "blockWebRTC": "Block WebRTC",
+      "blockWebGL": "Block WebGL"
+    },
+    "navigator": {
+      "title": "Navigator Properties",
+      "userAgent": "User Agent",
+      "platform": "Platform",
+      "appVersion": "App Version",
+      "osCpu": "OS CPU",
+      "hardwareConcurrency": "Hardware Concurrency",
+      "maxTouchPoints": "Max Touch Points",
+      "doNotTrack": "Do Not Track",
+      "selectDnt": "Select DNT value",
+      "dntAllowed": "0 (tracking allowed)",
+      "dntNotAllowed": "1 (tracking not allowed)",
+      "dntUnspecified": "unspecified",
+      "language": "Language"
+    },
+    "screen": {
+      "title": "Screen Properties",
+      "width": "Screen Width",
+      "height": "Screen Height",
+      "availWidth": "Available Width",
+      "availHeight": "Available Height",
+      "colorDepth": "Color Depth",
+      "pixelDepth": "Pixel Depth",
+      "resolution": "Screen Resolution",
+      "maxWidth": "Max Width",
+      "maxHeight": "Max Height",
+      "minWidth": "Min Width",
+      "minHeight": "Min Height"
+    },
+    "window": {
+      "title": "Window Properties",
+      "outerWidth": "Outer Width",
+      "outerHeight": "Outer Height",
+      "innerWidth": "Inner Width",
+      "innerHeight": "Inner Height",
+      "screenX": "Screen X",
+      "screenY": "Screen Y"
+    },
+    "geolocation": {
+      "title": "Geolocation",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "accuracy": "Accuracy (meters)"
+    },
+    "timezone": {
+      "title": "Timezone",
+      "timezoneIana": "Timezone (IANA)",
+      "offset": "Offset (minutes from UTC)"
+    },
+    "locale": {
+      "title": "Locale",
+      "language": "Language",
+      "region": "Region",
+      "script": "Script"
+    },
+    "webgl": {
+      "title": "WebGL Properties",
+      "vendor": "WebGL Vendor",
+      "renderer": "WebGL Renderer",
+      "parameters": "WebGL Parameters",
+      "parameters2": "WebGL2 Parameters",
+      "shaderPrecisionFormats": "WebGL Shader Precision Formats",
+      "shaderPrecisionFormats2": "WebGL2 Shader Precision Formats",
+      "parametersJson": "WebGL Parameters (JSON)"
+    },
+    "fonts": {
+      "title": "Fonts",
+      "titleJsonArray": "Fonts (JSON array)"
+    },
+    "battery": {
+      "title": "Battery",
+      "charging": "Charging",
+      "chargingTime": "Charging Time",
+      "dischargingTime": "Discharging Time",
+      "level": "Level (0-1)"
+    },
+    "autoLocation": "Automatically configure location information based on proxy configuration or your connection if no proxy provided",
+    "autoLocationShort": "Automatically configure location based on proxy or connection",
+    "userAgentPlatform": {
+      "title": "User Agent & Platform",
+      "platformVersion": "Platform Version",
+      "brand": "Brand",
+      "brandVersion": "Brand Version"
+    },
+    "hardware": {
+      "title": "Hardware Properties",
+      "deviceMemory": "Device Memory (GB)",
+      "devicePixelRatio": "Device Pixel Ratio"
+    },
+    "languageLocale": {
+      "title": "Language & Locale",
+      "primaryLanguage": "Primary Language (navigator.language)",
+      "languages": "Languages (JSON array)"
+    },
+    "timezoneGeolocation": {
+      "title": "Timezone & Geolocation",
+      "description": "These values override the browser's timezone and geolocation APIs."
+    },
+    "canvas": {
+      "title": "Canvas Fingerprint",
+      "noiseSeed": "Canvas Noise Seed",
+      "noiseSeedDescription": "This seed is used to generate a consistent but unique canvas fingerprint. Each profile should have a different seed."
+    },
+    "audio": {
+      "title": "Audio Properties",
+      "sampleRate": "Sample Rate",
+      "maxChannelCount": "Max Channel Count"
+    },
+    "vendorInfo": {
+      "title": "Vendor Info",
+      "vendor": "Vendor",
+      "vendorSub": "Vendor Sub",
+      "productSub": "Product Sub"
+    }
+  },
+  "page": {
+    "noProfilesForUrls": "No profiles available. Please create a profile first before opening URLs.",
+    "failedLaunchBrowser": "Failed to launch browser:",
+    "failedCloneProfile": "Failed to clone profile:",
+    "failedDeleteProfile": "Failed to delete profile:",
+    "failedRenameProfile": "Failed to rename profile:",
+    "failedKillBrowser": "Failed to kill browser:",
+    "failedDeleteSelectedProfiles": "Failed to delete selected profiles:",
+    "cannotDeleteWhileRunning": "Cannot delete profile while browser is running. Please stop the browser first.",
+    "cookieCopyOnlyWayfernCamoufox": "Cookie copy only works with Wayfern and Camoufox profiles",
+    "syncDisabled": "Sync disabled",
+    "syncEnabled": "Sync enabled",
+    "syncDisabledDescription": "Profile sync has been disabled",
+    "syncEnabledDescription": "Profile sync has been enabled",
+    "failedUpdateSyncSettings": "Failed to update sync settings",
+    "deprecatedProfilesTitle": "Some profiles will be deprecated soon",
+    "deprecatedProfilesDescription": "The following profiles will be deprecated soon: {{names}}. Nightly profiles (except Firefox Developers Edition) will be removed in upcoming versions. Please check GitHub for migration instructions.",
+    "browserSupportEndingTitle": "Browser support ending soon",
+    "browserSupportEndingDescription": "Support for the following profiles will be removed on March 15, 2026: {{names}}. Please migrate to Wayfern or Camoufox profiles.",
+    "learnMore": "Learn more",
+    "deleteSelectedProfiles": "Delete Selected Profiles",
+    "deleteSelectedProfilesDescription": "This action cannot be undone. This will permanently delete {{count}} profile(s) and all associated data.",
+    "deleteNProfiles": "Delete {{count}} Profile(s)",
+    "failedCreateProfile": "Failed to create profile:",
+    "failedUpdateCamoufoxConfig": "Failed to update camoufox config:",
+    "failedUpdateWayfernConfig": "Failed to update wayfern config:"
+  },
+  "profileSelector": {
+    "chooseProfile": "Choose Profile",
+    "openingUrl": "Opening URL:",
+    "urlCopied": "URL copied to clipboard!",
+    "selectProfile": "Select Profile:",
+    "noProfiles": "No profiles available. Please create a profile first.",
+    "noProfilesHint": "Close this dialog and create a profile from the main window to get started.",
+    "chooseAProfile": "Choose a profile",
+    "proxy": "Proxy",
+    "running": "Running",
+    "unavailable": "Unavailable",
+    "open": "Open"
+  },
+  "profileTable": {
+    "columns": {
+      "tags": "Tags"
+    },
+    "tags": {
+      "noTags": "No tags",
+      "addTags": "Add tags"
+    },
+    "notes": {
+      "noNote": "No Note",
+      "addNote": "Add a note..."
+    },
+    "proxy": {
+      "notSelected": "Not Selected",
+      "searchProxies": "Search proxies...",
+      "noProxiesFound": "No proxies found.",
+      "noProxy": "No Proxy"
+    },
+    "select": {
+      "selectAll": "Select all",
+      "selectRow": "Select row",
+      "selectProfile": "Select profile"
+    },
+    "tooltips": {
+      "cantModifyRunning": "Can't modify running profile",
+      "cantModifyLaunching": "Can't modify profile while launching",
+      "cantModifyStopping": "Can't modify profile while stopping",
+      "cantModifyUpdating": "Can't modify profile while browser is updating",
+      "syncDisabledLastSync": "Sync is disabled, last sync {{time}}"
+    },
+    "empty": "No profiles found.",
+    "openMenu": "Open menu",
+    "viewNetwork": "View Network",
+    "assignToGroup": "Assign to Group",
+    "changeFingerprint": "Change Fingerprint",
+    "copyCookiesToProfile": "Copy Cookies to Profile",
+    "assignProxy": "Assign Proxy",
+    "copyCookies": "Copy Cookies",
+    "deleteDialog": {
+      "title": "Delete Profile",
+      "description": "This action cannot be undone. This will permanently delete the profile \"{{name}}\" and all its associated data.",
+      "confirmButton": "Delete Profile"
+    },
+    "errors": {
+      "failedRename": "Failed to rename profile"
+    }
+  },
+  "profileSync": {
+    "title": "Profile Sync",
+    "description": "Manage sync settings for \"{{name}}\"",
+    "configureFirst": "Please configure sync service first",
+    "syncEnabledSyncing": "Sync enabled - syncing now...",
+    "syncDisabled": "Sync disabled",
+    "failedUpdateSettings": "Failed to update sync settings",
+    "syncQueued": "Sync queued",
+    "failedQueueSync": "Failed to queue sync",
+    "syncEnabled": "Sync Enabled",
+    "syncAcrossDevices": "Sync this profile across devices",
+    "lastSynced": "Last Synced",
+    "configureSyncService": "Configure Sync Service",
+    "synced": "Synced",
+    "pending": "Pending",
+    "never": "Never",
+    "syncNow": "Sync Now",
+    "notConfigured": "Sync service not configured."
   }
 }

@@ -2,6 +2,7 @@
 
 import { invoke } from "@tauri-apps/api/core";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@/components/loading-button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -49,6 +50,7 @@ export function ProfileSelectorDialog({
 }: ProfileSelectorDialogProps) {
   // Use the centralized profile events hook
   const { profiles, runningProfiles: hookRunningProfiles } = useProfileEvents();
+  const { t } = useTranslation();
 
   // Use external runningProfiles if provided, otherwise use hook's runningProfiles
   const runningProfiles = externalRunningProfiles || hookRunningProfiles;
@@ -161,17 +163,19 @@ export function ProfileSelectorDialog({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Choose Profile</DialogTitle>
+          <DialogTitle>{t("profileSelector.chooseProfile")}</DialogTitle>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
           {url && (
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <Label className="text-sm font-medium">Opening URL:</Label>
+                <Label className="text-sm font-medium">
+                  {t("profileSelector.openingUrl")}
+                </Label>
                 <CopyToClipboard
                   text={url}
-                  successMessage="URL copied to clipboard!"
+                  successMessage={t("profileSelector.urlCopied")}
                 />
               </div>
               <div className="p-2 text-sm break-all rounded bg-muted">
@@ -181,15 +185,16 @@ export function ProfileSelectorDialog({
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="profile-select">Select Profile:</Label>
+            <Label htmlFor="profile-select">
+              {t("profileSelector.selectProfile")}
+            </Label>
             {profiles.length === 0 ? (
               <div className="space-y-2">
                 <div className="text-sm text-muted-foreground">
-                  No profiles available. Please create a profile first.
+                  {t("profileSelector.noProfiles")}
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  Close this dialog and create a profile from the main window to
-                  get started.
+                  {t("profileSelector.noProfilesHint")}
                 </div>
               </div>
             ) : (
@@ -198,7 +203,9 @@ export function ProfileSelectorDialog({
                 onValueChange={setSelectedProfile}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Choose a profile" />
+                  <SelectValue
+                    placeholder={t("profileSelector.chooseAProfile")}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {profiles.map((profile) => {
@@ -243,12 +250,12 @@ export function ProfileSelectorDialog({
                                 </Badge>
                                 {hasProxy(profile) && (
                                   <Badge variant="outline" className="text-xs">
-                                    Proxy
+                                    {t("profileSelector.proxy")}
                                   </Badge>
                                 )}
                                 {isRunning && (
                                   <Badge variant="default" className="text-xs">
-                                    Running
+                                    {t("profileSelector.running")}
                                   </Badge>
                                 )}
                                 {!canUseForLinks && (
@@ -256,7 +263,7 @@ export function ProfileSelectorDialog({
                                     variant="destructive"
                                     className="text-xs"
                                   >
-                                    Unavailable
+                                    {t("profileSelector.unavailable")}
                                   </Badge>
                                 )}
                               </div>
@@ -277,7 +284,7 @@ export function ProfileSelectorDialog({
 
         <DialogFooter>
           <RippleButton variant="outline" onClick={handleCancel}>
-            Cancel
+            {t("common.buttons.cancel")}
           </RippleButton>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -291,7 +298,7 @@ export function ProfileSelectorDialog({
                     !canOpenWithSelectedProfile()
                   }
                 >
-                  Open
+                  {t("profileSelector.open")}
                 </LoadingButton>
               </span>
             </TooltipTrigger>

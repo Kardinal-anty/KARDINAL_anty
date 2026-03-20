@@ -4,6 +4,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrent } from "@tauri-apps/plugin-deep-link";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { CamoufoxConfigDialog } from "@/components/camoufox-config-dialog";
 import { CommercialTrialModal } from "@/components/commercial-trial-modal";
 import { CookieCopyDialog } from "@/components/cookie-copy-dialog";
@@ -54,6 +55,8 @@ interface PendingUrl {
 }
 
 export default function Home() {
+  const { t } = useTranslation();
+
   // Mount global version update listener/toasts
   useVersionUpdater();
 
@@ -365,9 +368,7 @@ export default function Home() {
           "Received show create profile dialog request:",
           event.payload,
         );
-        showErrorToast(
-          "No profiles available. Please create a profile first before opening URLs.",
-        );
+        showErrorToast(t("page.noProfilesForUrls"));
         setCreateProfileDialogOpen(true);
       });
 
@@ -392,7 +393,7 @@ export default function Home() {
     } catch (error) {
       console.error("Failed to setup URL listener:", error);
     }
-  }, [handleUrlOpen]);
+  }, [handleUrlOpen, t]);
 
   const handleConfigureCamoufox = useCallback((profile: BrowserProfile) => {
     setCurrentProfileForCamoufoxConfig(profile);
@@ -411,12 +412,12 @@ export default function Home() {
       } catch (err: unknown) {
         console.error("Failed to update camoufox config:", err);
         showErrorToast(
-          `Failed to update camoufox config: ${JSON.stringify(err)}`,
+          `${t("page.failedUpdateCamoufoxConfig")} ${JSON.stringify(err)}`,
         );
         throw err;
       }
     },
-    [],
+    [t],
   );
 
   const handleSaveWayfernConfig = useCallback(
@@ -431,12 +432,12 @@ export default function Home() {
       } catch (err: unknown) {
         console.error("Failed to update wayfern config:", err);
         showErrorToast(
-          `Failed to update wayfern config: ${JSON.stringify(err)}`,
+          `${t("page.failedUpdateWayfernConfig")} ${JSON.stringify(err)}`,
         );
         throw err;
       }
     },
-    [],
+    [t],
   );
 
   const handleCreateProfile = useCallback(
@@ -467,73 +468,80 @@ export default function Home() {
         // No need to manually reload - useProfileEvents will handle the update
       } catch (error) {
         showErrorToast(
-          `Failed to create profile: ${
+          `${t("page.failedCreateProfile")} ${
             error instanceof Error ? error.message : String(error)
           }`,
         );
         throw error;
       }
     },
-    [selectedGroupId],
+    [selectedGroupId, t],
   );
 
-  const launchProfile = useCallback(async (profile: BrowserProfile) => {
-    console.log("Starting launch for profile:", profile.name);
+  const launchProfile = useCallback(
+    async (profile: BrowserProfile) => {
+      console.log("Starting launch for profile:", profile.name);
 
-    try {
-      const result = await invoke<BrowserProfile>("launch_browser_profile", {
-        profile,
-      });
-      console.log("Successfully launched profile:", result.name);
-    } catch (err: unknown) {
-      console.error("Failed to launch browser:", err);
-      const errorMessage = err instanceof Error ? err.message : String(err);
-      showErrorToast(`Failed to launch browser: ${errorMessage}`);
-      // Re-throw the error so the table component can handle loading state cleanup
-      throw err;
-    }
-  }, []);
-
-  const handleCloneProfile = useCallback(async (profile: BrowserProfile) => {
-    try {
-      await invoke<BrowserProfile>("clone_profile", {
-        profileId: profile.id,
-      });
-    } catch (err: unknown) {
-      console.error("Failed to clone profile:", err);
-      const errorMessage = err instanceof Error ? err.message : String(err);
-      showErrorToast(`Failed to clone profile: ${errorMessage}`);
-    }
-  }, []);
-
-  const handleDeleteProfile = useCallback(async (profile: BrowserProfile) => {
-    console.log("Attempting to delete profile:", profile.name);
-
-    try {
-      // First check if the browser is running for this profile
-      const isRunning = await invoke<boolean>("check_browser_status", {
-        profile,
-      });
-
-      if (isRunning) {
-        showErrorToast(
-          "Cannot delete profile while browser is running. Please stop the browser first.",
-        );
-        return;
+      try {
+        const result = await invoke<BrowserProfile>("launch_browser_profile", {
+          profile,
+        });
+        console.log("Successfully launched profile:", result.name);
+      } catch (err: unknown) {
+        console.error("Failed to launch browser:", err);
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        showErrorToast(`${t("page.failedLaunchBrowser")} ${errorMessage}`);
+        // Re-throw the error so the table component can handle loading state cleanup
+        throw err;
       }
+    },
+    [t],
+  );
 
-      // Attempt to delete the profile
-      await invoke("delete_profile", { profileId: profile.id });
-      console.log("Profile deletion command completed successfully");
+  const handleCloneProfile = useCallback(
+    async (profile: BrowserProfile) => {
+      try {
+        await invoke<BrowserProfile>("clone_profile", {
+          profileId: profile.id,
+        });
+      } catch (err: unknown) {
+        console.error("Failed to clone profile:", err);
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        showErrorToast(`${t("page.failedCloneProfile")} ${errorMessage}`);
+      }
+    },
+    [t],
+  );
 
-      // No need to manually reload - useProfileEvents will handle the update
-      console.log("Profile deleted successfully");
-    } catch (err: unknown) {
-      console.error("Failed to delete profile:", err);
-      const errorMessage = err instanceof Error ? err.message : String(err);
-      showErrorToast(`Failed to delete profile: ${errorMessage}`);
-    }
-  }, []);
+  const handleDeleteProfile = useCallback(
+    async (profile: BrowserProfile) => {
+      console.log("Attempting to delete profile:", profile.name);
+
+      try {
+        // First check if the browser is running for this profile
+        const isRunning = await invoke<boolean>("check_browser_status", {
+          profile,
+        });
+
+        if (isRunning) {
+          showErrorToast(t("page.cannotDeleteWhileRunning"));
+          return;
+        }
+
+        // Attempt to delete the profile
+        await invoke("delete_profile", { profileId: profile.id });
+        console.log("Profile deletion command completed successfully");
+
+        // No need to manually reload - useProfileEvents will handle the update
+        console.log("Profile deleted successfully");
+      } catch (err: unknown) {
+        console.error("Failed to delete profile:", err);
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        showErrorToast(`${t("page.failedDeleteProfile")} ${errorMessage}`);
+      }
+    },
+    [t],
+  );
 
   const handleRenameProfile = useCallback(
     async (profileId: string, newName: string) => {
@@ -542,28 +550,33 @@ export default function Home() {
         // No need to manually reload - useProfileEvents will handle the update
       } catch (err: unknown) {
         console.error("Failed to rename profile:", err);
-        showErrorToast(`Failed to rename profile: ${JSON.stringify(err)}`);
+        showErrorToast(
+          `${t("page.failedRenameProfile")} ${JSON.stringify(err)}`,
+        );
         throw err;
       }
     },
-    [],
+    [t],
   );
 
-  const handleKillProfile = useCallback(async (profile: BrowserProfile) => {
-    console.log("Starting kill for profile:", profile.name);
+  const handleKillProfile = useCallback(
+    async (profile: BrowserProfile) => {
+      console.log("Starting kill for profile:", profile.name);
 
-    try {
-      await invoke("kill_browser_profile", { profile });
-      console.log("Successfully killed profile:", profile.name);
-      // No need to manually reload - useProfileEvents will handle the update
-    } catch (err: unknown) {
-      console.error("Failed to kill browser:", err);
-      const errorMessage = err instanceof Error ? err.message : String(err);
-      showErrorToast(`Failed to kill browser: ${errorMessage}`);
-      // Re-throw the error so the table component can handle loading state cleanup
-      throw err;
-    }
-  }, []);
+      try {
+        await invoke("kill_browser_profile", { profile });
+        console.log("Successfully killed profile:", profile.name);
+        // No need to manually reload - useProfileEvents will handle the update
+      } catch (err: unknown) {
+        console.error("Failed to kill browser:", err);
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        showErrorToast(`${t("page.failedKillBrowser")} ${errorMessage}`);
+        // Re-throw the error so the table component can handle loading state cleanup
+        throw err;
+      }
+    },
+    [t],
+  );
 
   const handleDeleteSelectedProfiles = useCallback(
     async (profileIds: string[]) => {
@@ -573,11 +586,11 @@ export default function Home() {
       } catch (err: unknown) {
         console.error("Failed to delete selected profiles:", err);
         showErrorToast(
-          `Failed to delete selected profiles: ${JSON.stringify(err)}`,
+          `${t("page.failedDeleteSelectedProfiles")} ${JSON.stringify(err)}`,
         );
       }
     },
-    [],
+    [t],
   );
 
   const handleAssignProfilesToGroup = useCallback((profileIds: string[]) => {
@@ -604,12 +617,12 @@ export default function Home() {
     } catch (error) {
       console.error("Failed to delete selected profiles:", error);
       showErrorToast(
-        `Failed to delete selected profiles: ${JSON.stringify(error)}`,
+        `${t("page.failedDeleteSelectedProfiles")} ${JSON.stringify(error)}`,
       );
     } finally {
       setIsBulkDeleting(false);
     }
-  }, [selectedProfiles]);
+  }, [selectedProfiles, t]);
 
   const handleBulkGroupAssignment = useCallback(() => {
     if (selectedProfiles.length === 0) return;
@@ -636,14 +649,12 @@ export default function Home() {
         (p.browser === "wayfern" || p.browser === "camoufox"),
     );
     if (eligibleProfiles.length === 0) {
-      showErrorToast(
-        "Cookie copy only works with Wayfern and Camoufox profiles",
-      );
+      showErrorToast(t("page.cookieCopyOnlyWayfernCamoufox"));
       return;
     }
     setSelectedProfilesForCookies(eligibleProfiles.map((p) => p.id));
     setCookieCopyDialogOpen(true);
-  }, [selectedProfiles, profiles]);
+  }, [selectedProfiles, profiles, t]);
 
   const handleCopyCookiesToProfile = useCallback((profile: BrowserProfile) => {
     setSelectedProfilesForCookies([profile.id]);
@@ -679,19 +690,19 @@ export default function Home() {
           enabled: !profile.sync_enabled,
         });
         showSuccessToast(
-          profile.sync_enabled ? "Sync disabled" : "Sync enabled",
+          profile.sync_enabled ? t("page.syncDisabled") : t("page.syncEnabled"),
           {
             description: profile.sync_enabled
-              ? "Profile sync has been disabled"
-              : "Profile sync has been enabled",
+              ? t("page.syncDisabledDescription")
+              : t("page.syncEnabledDescription"),
           },
         );
       } catch (error) {
         console.error("Failed to toggle sync:", error);
-        showErrorToast("Failed to update sync settings");
+        showErrorToast(t("page.failedUpdateSyncSettings"));
       }
     },
-    [],
+    [t],
   );
 
   useEffect(() => {
@@ -763,21 +774,24 @@ export default function Home() {
       showToast({
         id: "deprecated-profiles-warning",
         type: "error",
-        title: "Some profiles will be deprecated soon",
-        description: `The following profiles will be deprecated soon: ${deprecatedNames}. Nightly profiles (except Firefox Developers Edition) will be removed in upcoming versions. Please check GitHub for migration instructions.`,
+        title: t("page.deprecatedProfilesTitle"),
+        description: t("page.deprecatedProfilesDescription", {
+          names: deprecatedNames,
+        }),
         duration: 15000,
         action: {
-          label: "Learn more",
+          label: t("page.learnMore"),
           onClick: () => {
             const event = new CustomEvent("url-open-request", {
-              detail: "https://github.com/Kardinal-anty/KARDINAL_anty/discussions/66",
+              detail:
+                "https://github.com/Kardinal-anty/KARDINAL_anty/discussions/66",
             });
             window.dispatchEvent(event);
           },
         },
       });
     }
-  }, [profiles]);
+  }, [profiles, t]);
 
   // Show warning for non-wayfern/camoufox profiles (support ending March 15, 2026)
   useEffect(() => {
@@ -795,21 +809,24 @@ export default function Home() {
       showToast({
         id: "browser-support-ending-warning",
         type: "error",
-        title: "Browser support ending soon",
-        description: `Support for the following profiles will be removed on March 15, 2026: ${unsupportedNames}. Please migrate to Wayfern or Camoufox profiles.`,
+        title: t("page.browserSupportEndingTitle"),
+        description: t("page.browserSupportEndingDescription", {
+          names: unsupportedNames,
+        }),
         duration: 15000,
         action: {
-          label: "Learn more",
+          label: t("page.learnMore"),
           onClick: () => {
             const event = new CustomEvent("url-open-request", {
-              detail: "https://github.com/Kardinal-anty/KARDINAL_anty/discussions",
+              detail:
+                "https://github.com/Kardinal-anty/KARDINAL_anty/discussions",
             });
             window.dispatchEvent(event);
           },
         },
       });
     }
-  }, [profiles]);
+  }, [profiles, t]);
 
   // Re-check Wayfern terms when a browser download completes
   useEffect(() => {
@@ -1050,9 +1067,13 @@ export default function Home() {
         isOpen={showBulkDeleteConfirmation}
         onClose={() => setShowBulkDeleteConfirmation(false)}
         onConfirm={confirmBulkDelete}
-        title="Delete Selected Profiles"
-        description={`This action cannot be undone. This will permanently delete ${selectedProfiles.length} profile${selectedProfiles.length !== 1 ? "s" : ""} and all associated data.`}
-        confirmButtonText={`Delete ${selectedProfiles.length} Profile${selectedProfiles.length !== 1 ? "s" : ""}`}
+        title={t("page.deleteSelectedProfiles")}
+        description={t("page.deleteSelectedProfilesDescription", {
+          count: selectedProfiles.length,
+        })}
+        confirmButtonText={t("page.deleteNProfiles", {
+          count: selectedProfiles.length,
+        })}
         isLoading={isBulkDeleting}
         profileIds={selectedProfiles}
         profiles={profiles.map((p) => ({ id: p.id, name: p.name }))}

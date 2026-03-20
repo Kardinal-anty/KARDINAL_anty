@@ -91,7 +91,7 @@ export function SyncConfigDialog({ isOpen, onClose }: SyncConfigDialogProps) {
 
   const handleTestConnection = useCallback(async () => {
     if (!serverUrl) {
-      showErrorToast("Please enter a server URL");
+      showErrorToast(t("sync.selfHosted.enterServerUrl"));
       return;
     }
 
@@ -100,16 +100,16 @@ export function SyncConfigDialog({ isOpen, onClose }: SyncConfigDialogProps) {
       const healthUrl = `${serverUrl.replace(/\/$/, "")}/health`;
       const response = await fetch(healthUrl);
       if (response.ok) {
-        showSuccessToast("Connection successful!");
+        showSuccessToast(t("sync.selfHosted.connectionSuccessful"));
       } else {
-        showErrorToast("Server responded with an error");
+        showErrorToast(t("sync.selfHosted.serverError"));
       }
     } catch {
-      showErrorToast("Failed to connect to server");
+      showErrorToast(t("sync.selfHosted.connectionFailed"));
     } finally {
       setIsTesting(false);
     }
-  }, [serverUrl]);
+  }, [serverUrl, t]);
 
   const handleSave = useCallback(async () => {
     setIsSaving(true);
@@ -118,15 +118,15 @@ export function SyncConfigDialog({ isOpen, onClose }: SyncConfigDialogProps) {
         syncServerUrl: serverUrl || null,
         syncToken: token || null,
       });
-      showSuccessToast("Sync settings saved");
+      showSuccessToast(t("sync.selfHosted.settingsSaved"));
       onClose();
     } catch (error) {
       console.error("Failed to save sync settings:", error);
-      showErrorToast("Failed to save settings");
+      showErrorToast(t("sync.selfHosted.saveFailed"));
     } finally {
       setIsSaving(false);
     }
-  }, [serverUrl, token, onClose]);
+  }, [serverUrl, token, onClose, t]);
 
   const handleDisconnect = useCallback(async () => {
     setIsSaving(true);
@@ -137,14 +137,14 @@ export function SyncConfigDialog({ isOpen, onClose }: SyncConfigDialogProps) {
       });
       setServerUrl("");
       setToken("");
-      showSuccessToast("Sync disconnected");
+      showSuccessToast(t("sync.selfHosted.disconnected"));
     } catch (error) {
       console.error("Failed to disconnect:", error);
-      showErrorToast("Failed to disconnect");
+      showErrorToast(t("sync.selfHosted.disconnectFailed"));
     } finally {
       setIsSaving(false);
     }
-  }, []);
+  }, [t]);
 
   const handleSendCode = useCallback(async () => {
     if (!email) return;
@@ -371,7 +371,11 @@ export function SyncConfigDialog({ isOpen, onClose }: SyncConfigDialogProps) {
                           type="button"
                           onClick={() => setShowToken(!showToken)}
                           className="absolute right-3 top-1/2 p-1 rounded-sm transition-colors transform -translate-y-1/2 hover:bg-accent"
-                          aria-label={showToken ? "Hide token" : "Show token"}
+                          aria-label={
+                            showToken
+                              ? t("sync.selfHosted.hideToken")
+                              : t("sync.selfHosted.showToken")
+                          }
                         >
                           {showToken ? (
                             <LuEyeOff className="w-4 h-4 text-muted-foreground hover:text-foreground" />
@@ -381,7 +385,9 @@ export function SyncConfigDialog({ isOpen, onClose }: SyncConfigDialogProps) {
                         </button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        {showToken ? "Hide token" : "Show token"}
+                        {showToken
+                          ? t("sync.selfHosted.hideToken")
+                          : t("sync.selfHosted.showToken")}
                       </TooltipContent>
                     </Tooltip>
                   </div>
@@ -403,7 +409,7 @@ export function SyncConfigDialog({ isOpen, onClose }: SyncConfigDialogProps) {
                   onClick={handleDisconnect}
                   disabled={isSaving}
                 >
-                  Disconnect
+                  {t("sync.selfHosted.disconnect")}
                 </Button>
               )}
               <Button
@@ -411,14 +417,16 @@ export function SyncConfigDialog({ isOpen, onClose }: SyncConfigDialogProps) {
                 onClick={handleTestConnection}
                 disabled={isTesting || !serverUrl}
               >
-                {isTesting ? "Testing..." : "Test Connection"}
+                {isTesting
+                  ? t("sync.selfHosted.testing")
+                  : t("sync.selfHosted.testConnection")}
               </Button>
               <LoadingButton
                 onClick={handleSave}
                 isLoading={isSaving}
                 disabled={!serverUrl || !token}
               >
-                Save
+                {t("common.buttons.save")}
               </LoadingButton>
             </DialogFooter>
           </TabsContent>
