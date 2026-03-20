@@ -506,7 +506,9 @@ impl AppAutoUpdater {
         && (asset.name.contains(&format!("_{arch}.dmg"))
           || asset.name.contains(&format!("-{arch}.dmg"))
           || asset.name.contains(&format!("_{arch}_"))
-          || asset.name.contains(&format!("-{arch}-")))
+          || asset.name.contains(&format!("-{arch}-"))
+          || asset.name.contains(&format!("_{arch}-"))
+          || asset.name.contains(&format!("-{arch}_")))
       {
         log::info!("Found exact architecture match: {}", asset.name);
         return Some(asset.browser_download_url.clone());
@@ -558,13 +560,15 @@ impl AppAutoUpdater {
     let extensions = ["msi", "exe", "zip"];
 
     for ext in &extensions {
-      // Look for exact architecture match
+      // Look for exact architecture match (supports _x64.ext, -x64.ext, _x64_, -x64-, _x64-)
       for asset in assets {
         if asset.name.to_lowercase().ends_with(&format!(".{ext}"))
           && (asset.name.contains(&format!("_{arch}.{ext}"))
             || asset.name.contains(&format!("-{arch}.{ext}"))
             || asset.name.contains(&format!("_{arch}_"))
-            || asset.name.contains(&format!("-{arch}-")))
+            || asset.name.contains(&format!("-{arch}-"))
+            || asset.name.contains(&format!("_{arch}-"))
+            || asset.name.contains(&format!("-{arch}_")))
         {
           log::info!("Found Windows {ext} with exact arch match: {}", asset.name);
           return Some(asset.browser_download_url.clone());
@@ -627,7 +631,9 @@ impl AppAutoUpdater {
           && (asset.name.contains(&format!("_{arch}.{ext}"))
             || asset.name.contains(&format!("-{arch}.{ext}"))
             || asset.name.contains(&format!("_{arch}_"))
-            || asset.name.contains(&format!("-{arch}-")))
+            || asset.name.contains(&format!("-{arch}-"))
+            || asset.name.contains(&format!("_{arch}-"))
+            || asset.name.contains(&format!("-{arch}_")))
         {
           log::info!("Found Linux {ext} with exact arch match: {}", asset.name);
           return Some(asset.browser_download_url.clone());
@@ -1700,13 +1706,8 @@ mod tests {
       },
       // Windows assets
       AppReleaseAsset {
-        name: "KARDINAL.Anty_0.1.0_x64.msi".to_string(),
-        browser_download_url: "https://example.com/x64.msi".to_string(),
-        size: 12345,
-      },
-      AppReleaseAsset {
-        name: "KARDINAL.Anty_0.1.0_x64.exe".to_string(),
-        browser_download_url: "https://example.com/x64.exe".to_string(),
+        name: "KARDINAL.Anty_0.1.0_x64-setup.exe".to_string(),
+        browser_download_url: "https://example.com/x64-setup.exe".to_string(),
         size: 12345,
       },
       // Linux assets
@@ -1874,8 +1875,8 @@ mod tests {
       },
       // Windows assets
       AppReleaseAsset {
-        name: "KARDINAL.Anty_0.1.0_x64.msi".to_string(),
-        browser_download_url: "https://example.com/x64.msi".to_string(),
+        name: "KARDINAL.Anty_0.1.0_x64-setup.exe".to_string(),
+        browser_download_url: "https://example.com/x64-setup.exe".to_string(),
         size: 12345,
       },
       // Linux assets
