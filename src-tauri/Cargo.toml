@@ -1,6 +1,6 @@
 [package]
 name = "kardinal-anty"
-version = "0.14.2"
+version = "0.14.3"
 description = "KARDINAL Anty - Anti-Detect Browser"
 authors = ["Kardinal-anty"]
 edition = "2021"

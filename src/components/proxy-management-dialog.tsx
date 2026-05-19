@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { GoPlus } from "react-icons/go";
 import {
   LuDownload,
-  LuExternalLink,
+  LuKey,
   LuPencil,
   LuTrash2,
   LuUpload,
@@ -17,6 +17,7 @@ import { DeleteConfirmationDialog } from "@/components/delete-confirmation-dialo
 import { ProxyExportDialog } from "@/components/proxy-export-dialog";
 import { ProxyFormDialog } from "@/components/proxy-form-dialog";
 import { ProxyImportDialog } from "@/components/proxy-import-dialog";
+import { SXOrgIntegrationDialog } from "@/components/sxorg-integration-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -108,6 +109,7 @@ export function ProxyManagementDialog({
   const [showProxyForm, setShowProxyForm] = useState(false);
   const [showImportDialog, setShowImportDialog] = useState(false);
   const [showExportDialog, setShowExportDialog] = useState(false);
+  const [showSXOrgDialog, setShowSXOrgDialog] = useState(false);
   const [editingProxy, setEditingProxy] = useState<StoredProxy | null>(null);
   const [proxyToDelete, setProxyToDelete] = useState<StoredProxy | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -247,7 +249,7 @@ export function ProxyManagementDialog({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-4xl">
+        <DialogContent className="w-[95vw] sm:max-w-4xl max-h-[90vh] flex flex-col">
           <DialogHeader>
             <DialogTitle>{t("proxies.management")}</DialogTitle>
             <DialogDescription>
@@ -255,10 +257,10 @@ export function ProxyManagementDialog({
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-4">
+          <div className="flex flex-col flex-1 min-h-0 space-y-4">
             {/* Proxy actions */}
             <div className="flex flex-wrap justify-between items-center gap-2">
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <RippleButton
                   size="sm"
                   variant="outline"
@@ -284,16 +286,10 @@ export function ProxyManagementDialog({
                       size="sm"
                       variant="outline"
                       className="flex gap-2 items-center"
-                      asChild
+                      onClick={() => setShowSXOrgDialog(true)}
                     >
-                      <a
-                        href="https://sx.org/?c=ln6kt8"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <LuExternalLink className="w-4 h-4" />
-                        {t("proxies.recommendedProxies")}
-                      </a>
+                      <LuKey className="w-4 h-4" />
+                      {t("proxies.recommendedProxies")}
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -321,8 +317,8 @@ export function ProxyManagementDialog({
                 {t("proxies.noProxiesCreated")}
               </div>
             ) : (
-              <div className="border rounded-md">
-                <ScrollArea className="h-[240px]">
+              <div className="border rounded-md flex-1 min-h-0 overflow-hidden">
+                <ScrollArea className="h-full">
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -505,6 +501,10 @@ export function ProxyManagementDialog({
       <ProxyExportDialog
         isOpen={showExportDialog}
         onClose={() => setShowExportDialog(false)}
+      />
+      <SXOrgIntegrationDialog
+        isOpen={showSXOrgDialog}
+        onClose={() => setShowSXOrgDialog(false)}
       />
     </>
   );
